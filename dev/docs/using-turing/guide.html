@@ -795,10 +795,10 @@
 <span class="k">end</span>
 </code></pre></div></div>
 
-<p>Assign the function without inputs to a variable, and Turing will produce a sample from the prior distribution.</p>
+<p>Assign the function with <code class="language-plaintext highlighter-rouge">missing</code> inputs to a variable, and Turing will produce a sample from the prior distribution.</p>
 
 <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Samples from p(x,y)</span>
-<span class="n">g_prior_sample</span> <span class="o">=</span> <span class="n">gdemo</span><span class="x">()</span>
+<span class="n">g_prior_sample</span> <span class="o">=</span> <span class="n">gdemo</span><span class="x">(</span><span class="nb">missing</span><span class="x">,</span> <span class="nb">missing</span><span class="x">)</span>
 <span class="n">g_prior_sample</span><span class="x">()</span>
 </code></pre></div></div>
 
@@ -811,13 +811,17 @@
 
 <h3 id="sampling-from-a-conditional-distribution-the-posterior">Sampling from a Conditional Distribution (The Posterior)</h3>
 
-<p><a id="Using-Missing-1"></a></p>
+<p><a id="Treating-observations-as-random-variables-1"></a></p>
 
-<h4 id="using-missing">Using <code class="language-plaintext highlighter-rouge">Missing</code></h4>
+<h4 id="treating-observations-as-random-variables">Treating observations as random variables</h4>
 
-<p>Values that are <code class="language-plaintext highlighter-rouge">missing</code> are treated as parameters to be estimated. This can be useful if you want to simulate draws for that parameter, or if you are sampling from a conditional distribution. Turing v0.6.7 supports the following syntax:</p>
+<p>Inputs to the model that have a value <code class="language-plaintext highlighter-rouge">missing</code> are treated as parameters, aka random variables, to be estimated/sampled. This can be useful if you want to simulate draws for that parameter, or if you are sampling from a conditional distribution. Turing v0.6.7 supports the following syntax:</p>
 
-<div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@model</span> <span class="n">gdemo</span><span class="x">(</span><span class="n">x</span><span class="x">)</span> <span class="o">=</span> <span class="k">begin</span>
+<div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@model</span> <span class="n">gdemo</span><span class="x">(</span><span class="n">x</span><span class="x">,</span> <span class="o">::</span><span class="kt">Type</span><span class="x">{</span><span class="n">T</span><span class="x">}</span> <span class="o">=</span> <span class="kt">Float64</span><span class="x">)</span> <span class="k">where</span> <span class="x">{</span><span class="n">T</span><span class="x">}</span> <span class="o">=</span> <span class="k">begin</span>
+    <span class="k">if</span> <span class="n">x</span> <span class="o">===</span> <span class="nb">missing</span>
+        <span class="c"># Initialize `x` if missing</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="kt">Vector</span><span class="x">{</span><span class="n">T</span><span class="x">}(</span><span class="nb">undef</span><span class="x">,</span> <span class="mi">2</span><span class="x">)</span>
+    <span class="k">end</span>
     <span class="n">s</span> <span class="o">~</span> <span class="n">InverseGamma</span><span class="x">(</span><span class="mi">2</span><span class="x">,</span> <span class="mi">3</span><span class="x">)</span>
     <span class="n">m</span> <span class="o">~</span> <span class="n">Normal</span><span class="x">(</span><span class="mi">0</span><span class="x">,</span> <span class="n">sqrt</span><span class="x">(</span><span class="n">s</span><span class="x">))</span>
     <span class="k">for</span> <span class="n">i</span> <span class="k">in</span> <span class="n">eachindex</span><span class="x">(</span><span class="n">x</span><span class="x">)</span>
@@ -825,14 +829,14 @@
     <span class="k">end</span>
 <span class="k">end</span>
 
-<span class="c"># Treat x as a vector of missing values.</span>
-<span class="n">model</span> <span class="o">=</span> <span class="n">gdemo</span><span class="x">(</span><span class="n">fill</span><span class="x">(</span><span class="nb">missing</span><span class="x">,</span> <span class="mi">2</span><span class="x">))</span>
+<span class="c"># Construct a model with x = missing</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">gdemo</span><span class="x">(</span><span class="nb">missing</span><span class="x">)</span>
 <span class="n">c</span> <span class="o">=</span> <span class="n">sample</span><span class="x">(</span><span class="n">model</span><span class="x">,</span> <span class="n">HMC</span><span class="x">(</span><span class="mf">0.01</span><span class="x">,</span> <span class="mi">5</span><span class="x">),</span> <span class="mi">500</span><span class="x">)</span>
 </code></pre></div></div>
 
-<p>The above case tells the model compiler the dimensions of the values it needs to generate. The generated values for <code class="language-plaintext highlighter-rouge">x</code> can be extracted from the <code class="language-plaintext highlighter-rouge">Chains</code> object using <code class="language-plaintext highlighter-rouge">c[:x]</code>.</p>
+<p>Note the need to initialize <code class="language-plaintext highlighter-rouge">x</code> when missing since we are iterating over its elements later in the model. The generated values for <code class="language-plaintext highlighter-rouge">x</code> can be extracted from the <code class="language-plaintext highlighter-rouge">Chains</code> object using <code class="language-plaintext highlighter-rouge">c[:x]</code>.</p>
 
-<p>Currently, Turing does not support vector-valued inputs containing mixed <code class="language-plaintext highlighter-rouge">missing</code> and non-missing values, i.e. vectors of type <code class="language-plaintext highlighter-rouge">Union{Missing, T}</code> where <code class="language-plaintext highlighter-rouge">T</code> is any type. The following <strong>will not work</strong>:</p>
+<p>Turing also supports mixed <code class="language-plaintext highlighter-rouge">missing</code> and non-<code class="language-plaintext highlighter-rouge">missing</code> values in <code class="language-plaintext highlighter-rouge">x</code>, where the missing ones will be treated as random variables to be sampled while the others get treated as observations. For example:</p>
 
 <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@model</span> <span class="n">gdemo</span><span class="x">(</span><span class="n">x</span><span class="x">)</span> <span class="o">=</span> <span class="k">begin</span>
     <span class="n">s</span> <span class="o">~</span> <span class="n">InverseGamma</span><span class="x">(</span><span class="mi">2</span><span class="x">,</span> <span class="mi">3</span><span class="x">)</span>
@@ -842,46 +846,24 @@
     <span class="k">end</span>
 <span class="k">end</span>
 
-<span class="c"># Warning: This will provide an error!</span>
+<span class="c"># x[1] is a parameter, but x[2] is an observation</span>
 <span class="n">model</span> <span class="o">=</span> <span class="n">gdemo</span><span class="x">([</span><span class="nb">missing</span><span class="x">,</span> <span class="mf">2.4</span><span class="x">])</span>
 <span class="n">c</span> <span class="o">=</span> <span class="n">sample</span><span class="x">(</span><span class="n">model</span><span class="x">,</span> <span class="n">HMC</span><span class="x">(</span><span class="mf">0.01</span><span class="x">,</span> <span class="mi">5</span><span class="x">),</span> <span class="mi">500</span><span class="x">)</span>
 </code></pre></div></div>
 
-<p>If this is functionality you need, you may need to define each parameter as a separate variable, as below:</p>
+<p><a id="Default-Values-1"></a></p>
 
-<div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@model</span> <span class="n">gdemo</span><span class="x">(</span><span class="n">x1</span><span class="x">,</span> <span class="n">x2</span><span class="x">)</span> <span class="o">=</span> <span class="k">begin</span>
-    <span class="n">s</span> <span class="o">~</span> <span class="n">InverseGamma</span><span class="x">(</span><span class="mi">2</span><span class="x">,</span> <span class="mi">3</span><span class="x">)</span>
-    <span class="n">m</span> <span class="o">~</span> <span class="n">Normal</span><span class="x">(</span><span class="mi">0</span><span class="x">,</span> <span class="n">sqrt</span><span class="x">(</span><span class="n">s</span><span class="x">))</span>
-    <span class="c"># Note that x1 and x2 are no longer vector-valued.</span>
-    <span class="n">x1</span> <span class="o">~</span> <span class="n">Normal</span><span class="x">(</span><span class="n">m</span><span class="x">,</span> <span class="n">sqrt</span><span class="x">(</span><span class="n">s</span><span class="x">))</span>
-    <span class="n">x2</span> <span class="o">~</span> <span class="n">Normal</span><span class="x">(</span><span class="n">m</span><span class="x">,</span> <span class="n">sqrt</span><span class="x">(</span><span class="n">s</span><span class="x">))</span>
-<span class="k">end</span>
+<h4 id="default-values">Default Values</h4>
 
-<span class="c"># Equivalent to sampling p( x1 | x2 = 1.5).</span>
-<span class="n">model</span> <span class="o">=</span> <span class="n">gdemo</span><span class="x">(</span><span class="nb">missing</span><span class="x">,</span> <span class="mf">1.5</span><span class="x">)</span>
-<span class="n">c</span> <span class="o">=</span> <span class="n">sample</span><span class="x">(</span><span class="n">model</span><span class="x">,</span> <span class="n">HMC</span><span class="x">(</span><span class="mf">0.01</span><span class="x">,</span> <span class="mi">5</span><span class="x">),</span> <span class="mi">500</span><span class="x">)</span>
-</code></pre></div></div>
-
-<p><a id="Using-Argument-Defaults-1"></a></p>
-
-<h4 id="using-argument-defaults">Using Argument Defaults</h4>
-
-<p>Turing models can also be treated as generative by providing default values in the model declaration, and then calling that model without arguments.</p>
-
-<p>Suppose we wish to generate data according to the model</p>
-
-<p>:$</p>
-
-<p>s \sim \text{InverseGamma}(2, 3) \
-m \sim \text{Normal}(0, \sqrt{s}) \
-x_i \sim \text{Normal}(m, \sqrt{s}), \space i = 1\dots10 :$</p>
-
-<p>Each $x_i$ can be generated by Turing. In the model below, if <code class="language-plaintext highlighter-rouge">x</code> is not provided when the function is called, <code class="language-plaintext highlighter-rouge">x</code> will default to <code class="language-plaintext highlighter-rouge">Vector{Real}(undef, 10)</code>, a 10-element array of <code class="language-plaintext highlighter-rouge">Real</code> values. The sampler will then treat <code class="language-plaintext highlighter-rouge">x</code> as a parameter and generate those quantities.</p>
+<p>Arguments to Turing models can have default values much like how default values work in normal Julia functions. For instance, the following will assign <code class="language-plaintext highlighter-rouge">missing</code> to <code class="language-plaintext highlighter-rouge">x</code> and treat it as a random variable. If the default value is not <code class="language-plaintext highlighter-rouge">missing</code>, <code class="language-plaintext highlighter-rouge">x</code> will be assigned that value and will be treated as an observation instead.</p>
 
 <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">using</span> <span class="n">Turing</span>
 
-<span class="c"># Declare a model with a default value.</span>
-<span class="nd">@model</span> <span class="n">generative</span><span class="x">(</span><span class="n">x</span> <span class="o">=</span> <span class="kt">Vector</span><span class="x">{</span><span class="kt">Real</span><span class="x">}(</span><span class="nb">undef</span><span class="x">,</span> <span class="mi">10</span><span class="x">))</span> <span class="o">=</span> <span class="k">begin</span>
+<span class="nd">@model</span> <span class="n">generative</span><span class="x">(</span><span class="n">x</span> <span class="o">=</span> <span class="nb">missing</span><span class="x">,</span> <span class="o">::</span><span class="kt">Type</span><span class="x">{</span><span class="n">T</span><span class="x">}</span> <span class="o">=</span> <span class="kt">Float64</span><span class="x">)</span> <span class="k">where</span> <span class="x">{</span><span class="n">T</span> <span class="o">&lt;:</span> <span class="kt">Real</span><span class="x">}</span> <span class="o">=</span> <span class="k">begin</span>
+    <span class="k">if</span> <span class="n">x</span> <span class="o">===</span> <span class="nb">missing</span>
+        <span class="c"># Initialize x when missing</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="kt">Vector</span><span class="x">{</span><span class="n">T</span><span class="x">}(</span><span class="nb">undef</span><span class="x">,</span> <span class="mi">10</span><span class="x">)</span>
+    <span class="k">end</span>
     <span class="n">s</span> <span class="o">~</span> <span class="n">InverseGamma</span><span class="x">(</span><span class="mi">2</span><span class="x">,</span> <span class="mi">3</span><span class="x">)</span>
     <span class="n">m</span> <span class="o">~</span> <span class="n">Normal</span><span class="x">(</span><span class="mi">0</span><span class="x">,</span> <span class="n">sqrt</span><span class="x">(</span><span class="n">s</span><span class="x">))</span>
     <span class="k">for</span> <span class="n">i</span> <span class="k">in</span> <span class="mi">1</span><span class="o">:</span><span class="n">length</span><span class="x">(</span><span class="n">x</span><span class="x">)</span>
@@ -889,26 +871,14 @@ x_i \sim \text{Normal}(m, \sqrt{s}), \space i = 1\dots10 :$</p>
     <span class="k">end</span>
     <span class="k">return</span> <span class="n">s</span><span class="x">,</span> <span class="n">m</span>
 <span class="k">end</span>
-</code></pre></div></div>
 
-<p>This model can be called in a traditional fashion, with an argument vector of any size:</p>
-
-<div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># The values 1.5 and 2.0 will be observed by the sampler.</span>
-<span class="n">m</span> <span class="o">=</span> <span class="n">generative</span><span class="x">([</span><span class="mf">1.5</span><span class="x">,</span><span class="mf">2.0</span><span class="x">])</span>
+<span class="n">m</span> <span class="o">=</span> <span class="n">generative</span><span class="x">()</span>
 <span class="n">chain</span> <span class="o">=</span> <span class="n">sample</span><span class="x">(</span><span class="n">m</span><span class="x">,</span> <span class="n">HMC</span><span class="x">(</span><span class="mf">0.01</span><span class="x">,</span> <span class="mi">5</span><span class="x">),</span> <span class="mi">1000</span><span class="x">)</span>
 </code></pre></div></div>
 
-<p>We can generate observations by providing no arguments in the <code class="language-plaintext highlighter-rouge">sample</code> call.</p>
+<p><a id="Access-Values-inside-Chain-1"></a></p>
 
-<div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># This call will generate a vector of 10 values</span>
-<span class="c"># every sampler iteration.</span>
-<span class="n">generated</span> <span class="o">=</span> <span class="n">sample</span><span class="x">(</span><span class="n">generative</span><span class="x">(),</span> <span class="n">HMC</span><span class="x">(</span><span class="mf">0.01</span><span class="x">,</span> <span class="mi">5</span><span class="x">),</span> <span class="mi">1000</span><span class="x">)</span>
-</code></pre></div></div>
-
-<p>The generated quantities can then be accessed by pulling them out of the chain. To access all the <code class="language-plaintext highlighter-rouge">x</code> values, we first subset the chain using <code class="language-plaintext highlighter-rouge">generated[:x]</code></p>
-
-<div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">xs</span> <span class="o">=</span> <span class="n">generated</span><span class="x">[</span><span class="o">:</span><span class="n">x</span><span class="x">]</span>
-</code></pre></div></div>
+<h4 id="access-values-inside-chain">Access Values inside Chain</h4>
 
 <p>You can access the values inside a chain several ways:</p>
 
@@ -918,49 +888,13 @@ x_i \sim \text{Normal}(m, \sqrt{s}), \space i = 1\dots10 :$</p>
   <li>Create a three-dimensional <code class="language-plaintext highlighter-rouge">Array</code> object</li>
 </ol>
 
-<div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Convert to a DataFrame.</span>
-<span class="n">DataFrame</span><span class="x">(</span><span class="n">xs</span><span class="x">)</span>
+<p>For example, let <code class="language-plaintext highlighter-rouge">c</code> be a <code class="language-plaintext highlighter-rouge">Chain</code>:     1. <code class="language-plaintext highlighter-rouge">DataFrame(c)</code> converts <code class="language-plaintext highlighter-rouge">c</code> to a <code class="language-plaintext highlighter-rouge">DataFrame</code>,     2. <code class="language-plaintext highlighter-rouge">c.value</code> retrieves the values inside <code class="language-plaintext highlighter-rouge">c</code> as an <code class="language-plaintext highlighter-rouge">AxisArray</code>, and     3. <code class="language-plaintext highlighter-rouge">c.value.data</code> retrieves the values inside <code class="language-plaintext highlighter-rouge">c</code> as a 3D <code class="language-plaintext highlighter-rouge">Array</code>.</p>
 
-<span class="c"># Retrieve an AxisArray.</span>
-<span class="n">xs</span><span class="o">.</span><span class="n">value</span>
+<p><a id="Variable-Types-and-Type-Parameters-1"></a></p>
 
-<span class="c"># Retrieve a basic 3D Array.</span>
-<span class="n">xs</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">data</span>
-</code></pre></div></div>
+<h4 id="variable-types-and-type-parameters">Variable Types and Type Parameters</h4>
 
-<p><a id="What-to-Use-as-a-Default-Value-1"></a></p>
-
-<h4 id="what-to-use-as-a-default-value">What to Use as a Default Value</h4>
-
-<p>Currently, the actual <em>value</em> of the default argument does not matter. Only the dimensions and type of a non-atomic value are relevant. Turing uses default values to pre-allocate vectors when they are treated as parameters, because if the value is not provided, the model will not know the size or type of a vector. Consider the following model:</p>
-
-<div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@model</span> <span class="n">generator</span><span class="x">(</span><span class="n">x</span><span class="x">)</span> <span class="o">=</span> <span class="k">begin</span>
-  <span class="n">s</span> <span class="o">~</span> <span class="n">InverseGamma</span><span class="x">(</span><span class="mi">2</span><span class="x">,</span> <span class="mi">3</span><span class="x">)</span>
-  <span class="n">m</span> <span class="o">~</span> <span class="n">Normal</span><span class="x">(</span><span class="mi">0</span><span class="x">,</span> <span class="n">sqrt</span><span class="x">(</span><span class="n">s</span><span class="x">))</span>
-  <span class="k">for</span> <span class="n">i</span> <span class="k">in</span> <span class="mi">1</span><span class="o">:</span><span class="n">length</span><span class="x">(</span><span class="n">x</span><span class="x">)</span>
-      <span class="n">x</span><span class="x">[</span><span class="n">i</span><span class="x">]</span> <span class="o">~</span> <span class="n">Normal</span><span class="x">(</span><span class="n">m</span><span class="x">,</span> <span class="n">sqrt</span><span class="x">(</span><span class="n">s</span><span class="x">))</span>
-  <span class="k">end</span>
-  <span class="k">return</span> <span class="n">s</span><span class="x">,</span> <span class="n">m</span>
-<span class="k">end</span>
-</code></pre></div></div>
-
-<p>If we are trying to generate random random values from the <code class="language-plaintext highlighter-rouge">generator</code> model and we call <code class="language-plaintext highlighter-rouge">sample(generator(), HMC(0.01, 5), 1000)</code>, we will receive an error. This is because there is no way to determine <code class="language-plaintext highlighter-rouge">length(x)</code>, whether <code class="language-plaintext highlighter-rouge">x</code> is a vector, and the type of the values in <code class="language-plaintext highlighter-rouge">x</code>.</p>
-
-<p>A sensible default value might be:</p>
-
-<div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@model</span> <span class="n">generator</span><span class="x">(</span><span class="n">x</span> <span class="o">=</span> <span class="n">zeros</span><span class="x">(</span><span class="mi">10</span><span class="x">))</span> <span class="o">=</span> <span class="k">begin</span>
-  <span class="n">s</span> <span class="o">~</span> <span class="n">InverseGamma</span><span class="x">(</span><span class="mi">2</span><span class="x">,</span> <span class="mi">3</span><span class="x">)</span>
-  <span class="n">m</span> <span class="o">~</span> <span class="n">Normal</span><span class="x">(</span><span class="mi">0</span><span class="x">,</span> <span class="n">sqrt</span><span class="x">(</span><span class="n">s</span><span class="x">))</span>
-  <span class="k">for</span> <span class="n">i</span> <span class="k">in</span> <span class="mi">1</span><span class="o">:</span><span class="n">length</span><span class="x">(</span><span class="n">x</span><span class="x">)</span>
-      <span class="n">x</span><span class="x">[</span><span class="n">i</span><span class="x">]</span> <span class="o">~</span> <span class="n">Normal</span><span class="x">(</span><span class="n">m</span><span class="x">,</span> <span class="n">sqrt</span><span class="x">(</span><span class="n">s</span><span class="x">))</span>
-  <span class="k">end</span>
-  <span class="k">return</span> <span class="n">s</span><span class="x">,</span> <span class="n">m</span>
-<span class="k">end</span>
-</code></pre></div></div>
-
-<p>In this case, the model compiler can now determine that <code class="language-plaintext highlighter-rouge">x</code> is a <code class="language-plaintext highlighter-rouge">Vector{Float64,1}</code> of length 10, and the model will work as intended. It doesn’t matter what the values in the vector are — at current, <code class="language-plaintext highlighter-rouge">x</code> will be treated as a parameter if it assumes its default value, i.e. no value was provided in the function call for that variable.</p>
-
-<p>The element type of the vector (or matrix) should match the type of the random variable, <code class="language-plaintext highlighter-rouge">&lt;: Integer</code> for discrete random variables and <code class="language-plaintext highlighter-rouge">&lt;: AbstractFloat</code> for continuous random variables. Moreover, if the continuous random variable is to be sampled using a Hamiltonian sampler, the vector’s element type needs to be <code class="language-plaintext highlighter-rouge">Real</code> to enable auto-differentiation through the model which uses special number types that are sub-types of <code class="language-plaintext highlighter-rouge">Real</code>. Finally, when using a particle sampler, a <code class="language-plaintext highlighter-rouge">TArray</code> should be used.</p>
+<p>The element type of a vector (or matrix) of random variables should match the <code class="language-plaintext highlighter-rouge">eltype</code> of the its prior distribution, <code class="language-plaintext highlighter-rouge">&lt;: Integer</code> for discrete distributions and <code class="language-plaintext highlighter-rouge">&lt;: AbstractFloat</code> for continuous distributions. Moreover, if the continuous random variable is to be sampled using a Hamiltonian sampler, the vector’s element type needs to either be:     1. <code class="language-plaintext highlighter-rouge">Real</code> to enable auto-differentiation through the model which uses special number types that are sub-types of <code class="language-plaintext highlighter-rouge">Real</code>, or     2. Some type parameter <code class="language-plaintext highlighter-rouge">T</code> defined in the model header using the type parameter syntax, e.g. <code class="language-plaintext highlighter-rouge">gdemo(x, ::Type{T} = Float64) where {T} = begin</code>. Similarly, when using a particle sampler, the Julia variable used should either be:     1. A <code class="language-plaintext highlighter-rouge">TArray</code>, or     2. An instance of some type parameter <code class="language-plaintext highlighter-rouge">T</code> defined in the model header using the type parameter syntax, e.g. <code class="language-plaintext highlighter-rouge">gdemo(x, ::Type{T} = Vector{Float64}) where {T} = begin</code>.</p>
 
 <p><a id="Beyond-the-Basics-1"></a></p>
 
