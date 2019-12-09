@@ -786,54 +786,6 @@
 <span class="k">end</span>
 
 <span class="k">function</span><span class="nf"> get_nlogp</span><span class="x">(</span><span class="n">model</span><span class="x">)</span>
-    <span class="c"># Set up the model call, sample from the prior.</span>
-    <span class="n">vi</span> <span class="o">=</span> <span class="n">Turing</span><span class="o">.</span><span class="n">VarInfo</span><span class="x">(</span><span class="n">model</span><span class="x">)</span>
-
-    <span class="c"># Define a function to optimize.</span>
-    <span class="k">function</span><span class="nf"> nlogp</span><span class="x">(</span><span class="n">sm</span><span class="x">)</span>
-        <span class="n">spl</span> <span class="o">=</span> <span class="n">Turing</span><span class="o">.</span><span class="n">SampleFromPrior</span><span class="x">()</span>
-        <span class="n">new_vi</span> <span class="o">=</span> <span class="n">Turing</span><span class="o">.</span><span class="n">VarInfo</span><span class="x">(</span><span class="n">vi</span><span class="x">,</span> <span class="n">spl</span><span class="x">,</span> <span class="n">sm</span><span class="x">)</span>
-        <span class="n">model</span><span class="x">(</span><span class="n">new_vi</span><span class="x">,</span> <span class="n">spl</span><span class="x">)</span>
-        <span class="o">-</span><span class="n">new_vi</span><span class="o">.</span><span class="n">logp</span>
-    <span class="k">end</span>
-
-    <span class="k">return</span> <span class="n">nlogp</span>
-<span class="k">end</span>
-
-<span class="c"># Define our data points.</span>
-<span class="n">x</span> <span class="o">=</span> <span class="mf">1.5</span>
-<span class="n">y</span> <span class="o">=</span> <span class="mf">2.0</span>
-<span class="n">model</span> <span class="o">=</span> <span class="n">gdemo</span><span class="x">(</span><span class="n">x</span><span class="x">,</span> <span class="n">y</span><span class="x">)</span>
-<span class="n">nlogp</span> <span class="o">=</span> <span class="n">get_nlogp</span><span class="x">(</span><span class="n">model</span><span class="x">)</span>
-
-<span class="c"># Import Optim.jl.</span>
-<span class="k">using</span> <span class="n">Optim</span>
-
-<span class="c"># Create a starting point, call the optimizer.</span>
-<span class="n">sm_0</span> <span class="o">=</span> <span class="x">[</span><span class="mf">1.0</span><span class="x">,</span> <span class="mf">1.0</span><span class="x">]</span>
-<span class="n">lb</span> <span class="o">=</span> <span class="x">[</span><span class="mf">0.0</span><span class="x">,</span> <span class="o">-</span><span class="nb">Inf</span><span class="x">]</span>
-<span class="n">ub</span> <span class="o">=</span> <span class="x">[</span><span class="nb">Inf</span><span class="x">,</span> <span class="nb">Inf</span><span class="x">]</span>
-<span class="n">result</span> <span class="o">=</span> <span class="n">optimize</span><span class="x">(</span><span class="n">nlogp</span><span class="x">,</span> <span class="n">lb</span><span class="x">,</span> <span class="n">ub</span><span class="x">,</span> <span class="n">sm_0</span><span class="x">,</span> <span class="n">Fminbox</span><span class="x">())</span>
-</code></pre></div></div>
-
-<p><a id="Maximum-a-Posteriori-Estimation-2"></a></p>
-
-<h2 id="maximum-a-posteriori-estimation-1">Maximum a Posteriori Estimation</h2>
-
-<p>Turing does not currently have built-in methods for calculating the <a href="https://en.wikipedia.org/wiki/Maximum_a_posteriori_estimation">maximum a posteriori</a> (MAP) for a model. This is a goal for Turing’s implementation (see <a href="https://github.com/TuringLang/Turing.jl/issues/605">this issue</a>), but for the moment, we present here a method for estimating the MAP using <a href="https://github.com/JuliaNLSolvers/Optim.jl">Optim.jl</a>.</p>
-
-<div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">using</span> <span class="n">Turing</span>
-
-<span class="c"># Define the simple gdemo model.</span>
-<span class="nd">@model</span> <span class="n">gdemo</span><span class="x">(</span><span class="n">x</span><span class="x">,</span> <span class="n">y</span><span class="x">)</span> <span class="o">=</span> <span class="k">begin</span>
-    <span class="n">s</span> <span class="o">~</span> <span class="n">InverseGamma</span><span class="x">(</span><span class="mi">2</span><span class="x">,</span> <span class="mi">3</span><span class="x">)</span>
-    <span class="n">m</span> <span class="o">~</span> <span class="n">Normal</span><span class="x">(</span><span class="mi">0</span><span class="x">,</span> <span class="n">sqrt</span><span class="x">(</span><span class="n">s</span><span class="x">))</span>
-    <span class="n">x</span> <span class="o">~</span> <span class="n">Normal</span><span class="x">(</span><span class="n">m</span><span class="x">,</span> <span class="n">sqrt</span><span class="x">(</span><span class="n">s</span><span class="x">))</span>
-    <span class="n">y</span> <span class="o">~</span> <span class="n">Normal</span><span class="x">(</span><span class="n">m</span><span class="x">,</span> <span class="n">sqrt</span><span class="x">(</span><span class="n">s</span><span class="x">))</span>
-    <span class="k">return</span> <span class="n">s</span><span class="x">,</span> <span class="n">m</span>
-<span class="k">end</span>
-
-<span class="k">function</span><span class="nf"> get_nlogp</span><span class="x">(</span><span class="n">model</span><span class="x">)</span>
     <span class="c"># Construct a trace struct</span>
     <span class="n">vi</span> <span class="o">=</span> <span class="n">Turing</span><span class="o">.</span><span class="n">VarInfo</span><span class="x">(</span><span class="n">model</span><span class="x">)</span>
 
@@ -853,55 +805,6 @@
 <span class="n">y</span> <span class="o">=</span> <span class="mf">2.0</span>
 <span class="n">model</span> <span class="o">=</span> <span class="n">gdemo</span><span class="x">(</span><span class="n">x</span><span class="x">,</span> <span class="n">y</span><span class="x">)</span>
 <span class="n">nlogp</span> <span class="o">=</span> <span class="n">get_nlogp</span><span class="x">(</span><span class="n">model</span><span class="x">)</span>
-
-<span class="c"># Import Optim.jl.</span>
-<span class="k">using</span> <span class="n">Optim</span>
-
-<span class="c"># Create a starting point, call the optimizer.</span>
-<span class="n">sm_0</span> <span class="o">=</span> <span class="x">[</span><span class="mf">1.0</span><span class="x">,</span> <span class="mf">1.0</span><span class="x">]</span>
-<span class="n">lb</span> <span class="o">=</span> <span class="x">[</span><span class="mf">0.0</span><span class="x">,</span> <span class="o">-</span><span class="nb">Inf</span><span class="x">]</span>
-<span class="n">ub</span> <span class="o">=</span> <span class="x">[</span><span class="nb">Inf</span><span class="x">,</span> <span class="nb">Inf</span><span class="x">]</span>
-<span class="n">result</span> <span class="o">=</span> <span class="n">optimize</span><span class="x">(</span><span class="n">nlogp</span><span class="x">,</span> <span class="n">lb</span><span class="x">,</span> <span class="n">ub</span><span class="x">,</span> <span class="n">sm_0</span><span class="x">,</span> <span class="n">Fminbox</span><span class="x">())</span>
-</code></pre></div></div>
-
-<p><a id="Maximum-Likelihood-Estimation-1"></a></p>
-
-<h2 id="maximum-likelihood-estimation">Maximum Likelihood Estimation</h2>
-
-<p>Much like the MAP example above, one can use Turing’s syntax to define a model and ignore the prior distributions to perform <a href="https://en.wikipedia.org/wiki/Maximum_likelihood_estimation">maximum likelihood estimation</a> (MLE).</p>
-
-<div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">using</span> <span class="n">Turing</span>
-
-<span class="c"># Define the simple gdemo model.</span>
-<span class="nd">@model</span> <span class="n">gdemo</span><span class="x">(</span><span class="n">x</span><span class="x">,</span> <span class="n">y</span><span class="x">)</span> <span class="o">=</span> <span class="k">begin</span>
-    <span class="n">s</span> <span class="o">~</span> <span class="n">InverseGamma</span><span class="x">(</span><span class="mi">2</span><span class="x">,</span> <span class="mi">3</span><span class="x">)</span>
-    <span class="n">m</span> <span class="o">~</span> <span class="n">Normal</span><span class="x">(</span><span class="mi">0</span><span class="x">,</span> <span class="n">sqrt</span><span class="x">(</span><span class="n">s</span><span class="x">))</span>
-    <span class="n">x</span> <span class="o">~</span> <span class="n">Normal</span><span class="x">(</span><span class="n">m</span><span class="x">,</span> <span class="n">sqrt</span><span class="x">(</span><span class="n">s</span><span class="x">))</span>
-    <span class="n">y</span> <span class="o">~</span> <span class="n">Normal</span><span class="x">(</span><span class="n">m</span><span class="x">,</span> <span class="n">sqrt</span><span class="x">(</span><span class="n">s</span><span class="x">))</span>
-    <span class="k">return</span> <span class="n">s</span><span class="x">,</span> <span class="n">m</span>
-<span class="k">end</span>
-
-<span class="k">function</span><span class="nf"> get_nloglike</span><span class="x">(</span><span class="n">model</span><span class="x">)</span>
-    <span class="c"># Construct a trace struct</span>
-    <span class="n">vi</span> <span class="o">=</span> <span class="n">Turing</span><span class="o">.</span><span class="n">VarInfo</span><span class="x">(</span><span class="n">model</span><span class="x">)</span>
-
-    <span class="c"># Define a function to optimize.</span>
-    <span class="k">function</span><span class="nf"> nloglike</span><span class="x">(</span><span class="n">sm</span><span class="x">)</span>
-        <span class="n">ctx</span> <span class="o">=</span> <span class="n">Turing</span><span class="o">.</span><span class="n">LikelihoodContext</span><span class="x">()</span>
-        <span class="n">spl</span> <span class="o">=</span> <span class="n">Turing</span><span class="o">.</span><span class="n">SampleFromPrior</span><span class="x">()</span>
-        <span class="n">new_vi</span> <span class="o">=</span> <span class="n">Turing</span><span class="o">.</span><span class="n">VarInfo</span><span class="x">(</span><span class="n">vi</span><span class="x">,</span> <span class="n">spl</span><span class="x">,</span> <span class="n">sm</span><span class="x">)</span>
-        <span class="n">model</span><span class="x">(</span><span class="n">new_vi</span><span class="x">,</span> <span class="n">spl</span><span class="x">,</span> <span class="n">ctx</span><span class="x">)</span>
-        <span class="o">-</span><span class="n">new_vi</span><span class="o">.</span><span class="n">logp</span>
-    <span class="k">end</span>
-
-    <span class="k">return</span> <span class="n">nloglike</span>
-<span class="k">end</span>
-
-<span class="c"># Define our data points.</span>
-<span class="n">x</span> <span class="o">=</span> <span class="mf">1.5</span>
-<span class="n">y</span> <span class="o">=</span> <span class="mf">2.0</span>
-<span class="n">model</span> <span class="o">=</span> <span class="n">gdemo</span><span class="x">(</span><span class="n">x</span><span class="x">,</span> <span class="n">y</span><span class="x">)</span>
-<span class="n">nlogp</span> <span class="o">=</span> <span class="n">get_nloglike</span><span class="x">(</span><span class="n">model</span><span class="x">)</span>
 
 <span class="c"># Import Optim.jl.</span>
 <span class="k">using</span> <span class="n">Optim</span>
