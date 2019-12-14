@@ -84,7 +84,7 @@
 
                 <div class="md-flex__cell md-flex__cell--shrink">
                   <div class="md-header-nav__source">
-                    <a class="md-source" href="/dev/docs/using-turing/get-started" title="Go to Get Started">
+                    <a class="md-source" href="/dev/docs/using-turing/get-started" title="Get started">
                       Get Started
                     </a>
                   </div>
@@ -92,7 +92,7 @@
 
                 <div class="md-flex__cell md-flex__cell--shrink">
                     <div class="md-header-nav__source">
-                      <a class="md-source" href="/dev/docs/using-turing/" title="Go to Documentation">
+                      <a class="md-source" href="/dev/docs/using-turing/" title="View documentation">
                         Documentation
                       </a>
                     </div>
@@ -100,8 +100,16 @@
 
                   <div class="md-flex__cell md-flex__cell--shrink">
                       <div class="md-header-nav__source">
-                        <a class="md-source" href="/dev/tutorials/" title="Go to Tutorial">
+                        <a class="md-source" href="/dev/tutorials/" title="View tutorials">
                           Tutorials
+                        </a>
+                      </div>
+                    </div>
+
+                    <div class="md-flex__cell md-flex__cell--shrink">
+                      <div class="md-header-nav__source">
+                        <a class="md-source" href="/dev/news/" title="News">
+                          News
                         </a>
                       </div>
                     </div>
@@ -350,8 +358,20 @@
                       
                       <li class="md-nav__item navbar_bottom-border">
                         <a class="md-nav__link" href="/dev/docs/library"
-                            id="pancakes-public"
-                            title="Public">Public</a>
+                            id="pancakes-turing"
+                            title="Turing">Turing</a>
+                      </li>
+                      
+                      <li class="md-nav__item navbar_bottom-border">
+                        <a class="md-nav__link" href="/dev/docs/library/advancedhmc/"
+                            id="pancakes-advancedhmc"
+                            title="AdvancedHMC">AdvancedHMC</a>
+                      </li>
+                      
+                      <li class="md-nav__item navbar_bottom-border">
+                        <a class="md-nav__link" href="/dev/docs/library/bijectors/"
+                            id="pancakes-bijectors"
+                            title="Bijectors">Bijectors</a>
                       </li>
                       
                     </ul>
@@ -570,9 +590,23 @@
                         
                         <li class="md-nav__item">
                         <a href="/dev/docs/library"
-                           title="Public" 
+                           title="Turing" 
                             style="color: red;"
-                           class="md-nav__link pancakes-child">Public</a>
+                           class="md-nav__link pancakes-child">Turing</a>
+                        </li>
+                        
+                        <li class="md-nav__item">
+                        <a href="/dev/docs/library/advancedhmc/"
+                           title="AdvancedHMC" 
+                           
+                           class="md-nav__link pancakes-child">AdvancedHMC</a>
+                        </li>
+                        
+                        <li class="md-nav__item">
+                        <a href="/dev/docs/library/bijectors/"
+                           title="Bijectors" 
+                           
+                           class="md-nav__link pancakes-child">Bijectors</a>
                         </li>
                     </ul>
                 </nav>
@@ -638,27 +672,23 @@
 <h2 id="index">Index</h2>
 
 <ul>
-  <li><a href="/dev/docs/library/#Libtask.TArray"><code class="language-plaintext highlighter-rouge">Libtask.TArray</code></a></li>
   <li><a href="/dev/docs/library/#Turing.BinomialLogit"><code class="language-plaintext highlighter-rouge">Turing.BinomialLogit</code></a></li>
   <li><a href="/dev/docs/library/#Turing.Flat"><code class="language-plaintext highlighter-rouge">Turing.Flat</code></a></li>
   <li><a href="/dev/docs/library/#Turing.FlatPos"><code class="language-plaintext highlighter-rouge">Turing.FlatPos</code></a></li>
+  <li><a href="/dev/docs/library/#Turing.OrderedLogistic"><code class="language-plaintext highlighter-rouge">Turing.OrderedLogistic</code></a></li>
+  <li><a href="/dev/docs/library/#Turing.Sampler"><code class="language-plaintext highlighter-rouge">Turing.Sampler</code></a></li>
+  <li><a href="/dev/docs/library/#Turing.VecBinomialLogit"><code class="language-plaintext highlighter-rouge">Turing.VecBinomialLogit</code></a></li>
+  <li><a href="/dev/docs/library/#Turing.Core.@model"><code class="language-plaintext highlighter-rouge">Turing.Core.@model</code></a></li>
   <li><a href="/dev/docs/library/#Turing.Inference.Gibbs"><code class="language-plaintext highlighter-rouge">Turing.Inference.Gibbs</code></a></li>
   <li><a href="/dev/docs/library/#Turing.Inference.HMC"><code class="language-plaintext highlighter-rouge">Turing.Inference.HMC</code></a></li>
   <li><a href="/dev/docs/library/#Turing.Inference.HMCDA"><code class="language-plaintext highlighter-rouge">Turing.Inference.HMCDA</code></a></li>
-  <li><a href="/dev/docs/library/#Turing.Inference.IPMCMC"><code class="language-plaintext highlighter-rouge">Turing.Inference.IPMCMC</code></a></li>
   <li><a href="/dev/docs/library/#Turing.Inference.IS"><code class="language-plaintext highlighter-rouge">Turing.Inference.IS</code></a></li>
   <li><a href="/dev/docs/library/#Turing.Inference.MH"><code class="language-plaintext highlighter-rouge">Turing.Inference.MH</code></a></li>
   <li><a href="/dev/docs/library/#Turing.Inference.NUTS"><code class="language-plaintext highlighter-rouge">Turing.Inference.NUTS</code></a></li>
   <li><a href="/dev/docs/library/#Turing.Inference.PG"><code class="language-plaintext highlighter-rouge">Turing.Inference.PG</code></a></li>
-  <li><a href="/dev/docs/library/#Turing.Inference.PMMH"><code class="language-plaintext highlighter-rouge">Turing.Inference.PMMH</code></a></li>
-  <li><a href="/dev/docs/library/#Turing.Inference.SGHMC"><code class="language-plaintext highlighter-rouge">Turing.Inference.SGHMC</code></a></li>
-  <li><a href="/dev/docs/library/#Turing.Inference.SGLD"><code class="language-plaintext highlighter-rouge">Turing.Inference.SGLD</code></a></li>
   <li><a href="/dev/docs/library/#Turing.Inference.SMC"><code class="language-plaintext highlighter-rouge">Turing.Inference.SMC</code></a></li>
-  <li><a href="/dev/docs/library/#Turing.OrderedLogistic"><code class="language-plaintext highlighter-rouge">Turing.OrderedLogistic</code></a></li>
-  <li><a href="/dev/docs/library/#Turing.Sampler"><code class="language-plaintext highlighter-rouge">Turing.Sampler</code></a></li>
-  <li><a href="/dev/docs/library/#Turing.VecBinomialLogit"><code class="language-plaintext highlighter-rouge">Turing.VecBinomialLogit</code></a></li>
+  <li><a href="/dev/docs/library/#Libtask.TArray"><code class="language-plaintext highlighter-rouge">Libtask.TArray</code></a></li>
   <li><a href="/dev/docs/library/#Libtask.tzeros"><code class="language-plaintext highlighter-rouge">Libtask.tzeros</code></a></li>
-  <li><a href="/dev/docs/library/#Turing.Core.@model"><code class="language-plaintext highlighter-rouge">Turing.Core.@model</code></a></li>
 </ul>
 
 <p><a id="Modelling-1"></a></p>
@@ -683,7 +713,7 @@
 
 <p>To generate a <code class="language-plaintext highlighter-rouge">Turing.Model</code>, call <code class="language-plaintext highlighter-rouge">model_generator(x_value)</code>.</p>
 
-<p><a target="_blank" href="https://github.com/TuringLang/Turing.jl/blob/d736f7ba7db103a167d8852bed8739fab7d664c2/src/core/compiler.jl#L162-L178" class="documenter-source">source</a><br /></p>
+<p><a target="_blank" href="https://github.com/TuringLang/Turing.jl/blob/72e221a3b9308a3b6e5fd8d2ecafcc0d0799379d/src/core/compiler.jl#L162-L178" class="documenter-source">source</a><br /></p>
 
 <p><a id="Samplers-1"></a></p>
 
@@ -703,7 +733,7 @@
 
 <p>Turing translates models to chunks that call the modelling functions at specified points. The dispatch is based on the value of a <code class="language-plaintext highlighter-rouge">sampler</code> variable. To include a new inference algorithm implements the requirements mentioned above in a separate file, then include that file at the end of this one.</p>
 
-<p><a target="_blank" href="https://github.com/TuringLang/Turing.jl/blob/d736f7ba7db103a167d8852bed8739fab7d664c2/src/Turing.jl#L88-L101" class="documenter-source">source</a><br /></p>
+<p><a target="_blank" href="https://github.com/TuringLang/Turing.jl/blob/72e221a3b9308a3b6e5fd8d2ecafcc0d0799379d/src/Turing.jl#L88-L101" class="documenter-source">source</a><br /></p>
 
 <h3 id="-turinginferencegibbs--type"><a id="Turing.Inference.Gibbs" href="#Turing.Inference.Gibbs">#</a> <strong><code class="language-plaintext highlighter-rouge">Turing.Inference.Gibbs</code></strong> — <em>Type</em>.</h3>
 
@@ -736,7 +766,7 @@
 
 <p>methods like Particle Gibbs. You can increase the effectiveness of particle sampling by including more particles in the particle sampler.</p>
 
-<p><a target="_blank" href="https://github.com/TuringLang/Turing.jl/blob/d736f7ba7db103a167d8852bed8739fab7d664c2/src/inference/gibbs.jl#L7-L32" class="documenter-source">source</a><br /></p>
+<p><a target="_blank" href="https://github.com/TuringLang/Turing.jl/blob/72e221a3b9308a3b6e5fd8d2ecafcc0d0799379d/src/inference/gibbs.jl#L7-L32" class="documenter-source">source</a><br /></p>
 
 <h3 id="-turinginferencehmc--type"><a id="Turing.Inference.HMC" href="#Turing.Inference.HMC">#</a> <strong><code class="language-plaintext highlighter-rouge">Turing.Inference.HMC</code></strong> — <em>Type</em>.</h3>
 
@@ -772,7 +802,7 @@
 <span class="n">sample</span><span class="x">(</span><span class="n">gdemo</span><span class="x">([</span><span class="mf">1.5</span><span class="x">,</span> <span class="mi">2</span><span class="x">]),</span> <span class="n">HMC</span><span class="x">(</span><span class="mf">0.01</span><span class="x">,</span> <span class="mi">10</span><span class="x">),</span> <span class="mi">1000</span><span class="x">)</span>
 </code></pre></div></div>
 
-<p><a target="_blank" href="https://github.com/TuringLang/Turing.jl/blob/d736f7ba7db103a167d8852bed8739fab7d664c2/src/inference/hmc.jl#L48-L76" class="documenter-source">source</a><br /></p>
+<p><a target="_blank" href="https://github.com/TuringLang/Turing.jl/blob/72e221a3b9308a3b6e5fd8d2ecafcc0d0799379d/src/inference/hmc.jl#L48-L76" class="documenter-source">source</a><br /></p>
 
 <h3 id="-turinginferencehmcda--type"><a id="Turing.Inference.HMCDA" href="#Turing.Inference.HMCDA">#</a> <strong><code class="language-plaintext highlighter-rouge">Turing.Inference.HMCDA</code></strong> — <em>Type</em>.</h3>
 
@@ -801,42 +831,11 @@
   <li>Hoffman, Matthew D., and Andrew Gelman. “The No-U-turn sampler: adaptively setting path lengths in Hamiltonian Monte Carlo.” Journal of Machine Learning Research 15, no. 1 (2014): 1593-1623.</li>
 </ul>
 
-<p><a target="_blank" href="https://github.com/TuringLang/Turing.jl/blob/d736f7ba7db103a167d8852bed8739fab7d664c2/src/inference/hmc.jl#L147-L170" class="documenter-source">source</a><br /></p>
+<p><a target="_blank" href="https://github.com/TuringLang/Turing.jl/blob/72e221a3b9308a3b6e5fd8d2ecafcc0d0799379d/src/inference/hmc.jl#L147-L170" class="documenter-source">source</a><br /></p>
 
-<h3 id="-turinginferenceipmcmc--type"><a id="Turing.Inference.IPMCMC" href="#Turing.Inference.IPMCMC">#</a> <strong><code class="language-plaintext highlighter-rouge">Turing.Inference.IPMCMC</code></strong> — <em>Type</em>.</h3>
+<h3 id="-turinginferenceis--type"><a id="Turing.Inference.IS" href="#Turing.Inference.IS">#</a> <strong><code class="language-plaintext highlighter-rouge">Turing.Inference.IS</code></strong> — <em>Type</em>.</h3>
 
-<div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">IPMCMC</span><span class="x">(</span><span class="n">n_particles</span><span class="o">::</span><span class="kt">Int</span><span class="x">,</span> <span class="n">n_iters</span><span class="o">::</span><span class="kt">Int</span><span class="x">,</span> <span class="n">n_nodes</span><span class="o">::</span><span class="kt">Int</span><span class="x">,</span> <span class="n">n_csmc_nodes</span><span class="o">::</span><span class="kt">Int</span><span class="x">)</span>
-</code></pre></div></div>
-
-<p>Particle Gibbs sampler.</p>
-
-<p>Note that this method is particle-based, and arrays of variables must be stored in a <a href="/dev/docs/library/#Libtask.TArray"><code class="language-plaintext highlighter-rouge">TArray</code></a> object.</p>
-
-<p>Usage:</p>
-
-<div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">IPMCMC</span><span class="x">(</span><span class="mi">100</span><span class="x">,</span> <span class="mi">100</span><span class="x">,</span> <span class="mi">4</span><span class="x">,</span> <span class="mi">2</span><span class="x">)</span>
-</code></pre></div></div>
-
-<p>Arguments:</p>
-
-<ul>
-  <li><code class="language-plaintext highlighter-rouge">n_particles::Int</code> : Number of particles to use.</li>
-  <li><code class="language-plaintext highlighter-rouge">n_iters::Int</code> : Number of iterations to employ.</li>
-  <li><code class="language-plaintext highlighter-rouge">n_nodes::Int</code> : The number of nodes running SMC and CSMC.</li>
-  <li><code class="language-plaintext highlighter-rouge">n_csmc_nodes::Int</code> : The number of CSMC nodes.</li>
-</ul>
-
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
-A paper on this can be found [here](https://arxiv.org/abs/1602.05128).
-
-
-&lt;a target='_blank' href='https://github.com/TuringLang/Turing.jl/blob/d736f7ba7db103a167d8852bed8739fab7d664c2/src/contrib/inference/AdvancedSMCExtensions.jl#L191-L214' class='documenter-source'&gt;source&lt;/a&gt;&lt;br&gt;
-
-### &lt;a id='Turing.Inference.IS' href='#Turing.Inference.IS'&gt;#&lt;/a&gt; **`Turing.Inference.IS`** &amp;mdash; *Type*.
-
-
-```julia
-IS()
+<div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">IS</span><span class="x">()</span>
 </code></pre></div></div>
 
 <p>Importance sampling algorithm.</p>
@@ -862,7 +861,7 @@ IS()
 <span class="n">sample</span><span class="x">(</span><span class="n">gdemo</span><span class="x">([</span><span class="mf">1.5</span><span class="x">,</span> <span class="mi">2</span><span class="x">]),</span> <span class="n">IS</span><span class="x">(),</span> <span class="mi">1000</span><span class="x">)</span>
 </code></pre></div></div>
 
-<p><a target="_blank" href="https://github.com/TuringLang/Turing.jl/blob/d736f7ba7db103a167d8852bed8739fab7d664c2/src/inference/is.jl#L1-L29" class="documenter-source">source</a><br /></p>
+<p><a target="_blank" href="https://github.com/TuringLang/Turing.jl/blob/72e221a3b9308a3b6e5fd8d2ecafcc0d0799379d/src/inference/is.jl#L1-L29" class="documenter-source">source</a><br /></p>
 
 <h3 id="-turinginferencemh--type"><a id="Turing.Inference.MH" href="#Turing.Inference.MH">#</a> <strong><code class="language-plaintext highlighter-rouge">Turing.Inference.MH</code></strong> — <em>Type</em>.</h3>
 
@@ -890,7 +889,7 @@ IS()
 <span class="n">chn</span> <span class="o">=</span> <span class="n">sample</span><span class="x">(</span><span class="n">gdemo</span><span class="x">([</span><span class="mf">1.5</span><span class="x">,</span> <span class="mi">2</span><span class="x">]),</span> <span class="n">MH</span><span class="x">(),</span> <span class="mi">1000</span><span class="x">)</span>
 </code></pre></div></div>
 
-<p><a target="_blank" href="https://github.com/TuringLang/Turing.jl/blob/d736f7ba7db103a167d8852bed8739fab7d664c2/src/inference/mh.jl#L10-L35" class="documenter-source">source</a><br /></p>
+<p><a target="_blank" href="https://github.com/TuringLang/Turing.jl/blob/72e221a3b9308a3b6e5fd8d2ecafcc0d0799379d/src/inference/mh.jl#L10-L35" class="documenter-source">source</a><br /></p>
 
 <h3 id="-turinginferencenuts--type"><a id="Turing.Inference.NUTS" href="#Turing.Inference.NUTS">#</a> <strong><code class="language-plaintext highlighter-rouge">Turing.Inference.NUTS</code></strong> — <em>Type</em>.</h3>
 
@@ -914,7 +913,7 @@ IS()
   <li><code class="language-plaintext highlighter-rouge">ϵ::Float64</code> : Inital step size; 0 means automatically search by Turing.</li>
 </ul>
 
-<p><a target="_blank" href="https://github.com/TuringLang/Turing.jl/blob/d736f7ba7db103a167d8852bed8739fab7d664c2/src/inference/hmc.jl#L213-L232" class="documenter-source">source</a><br /></p>
+<p><a target="_blank" href="https://github.com/TuringLang/Turing.jl/blob/72e221a3b9308a3b6e5fd8d2ecafcc0d0799379d/src/inference/hmc.jl#L213-L232" class="documenter-source">source</a><br /></p>
 
 <h3 id="-turinginferencepg--type"><a id="Turing.Inference.PG" href="#Turing.Inference.PG">#</a> <strong><code class="language-plaintext highlighter-rouge">Turing.Inference.PG</code></strong> — <em>Type</em>.</h3>
 
@@ -930,81 +929,7 @@ IS()
 <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">PG</span><span class="x">(</span><span class="mi">100</span><span class="x">,</span> <span class="mi">100</span><span class="x">)</span>
 </code></pre></div></div>
 
-<p><a target="_blank" href="https://github.com/TuringLang/Turing.jl/blob/d736f7ba7db103a167d8852bed8739fab7d664c2/src/inference/AdvancedSMC.jl#L156-L169" class="documenter-source">source</a><br /></p>
-
-<h3 id="-turinginferencepmmh--type"><a id="Turing.Inference.PMMH" href="#Turing.Inference.PMMH">#</a> <strong><code class="language-plaintext highlighter-rouge">Turing.Inference.PMMH</code></strong> — <em>Type</em>.</h3>
-
-<div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">PMMH</span><span class="x">(</span><span class="n">n_iters</span><span class="o">::</span><span class="kt">Int</span><span class="x">,</span> <span class="n">smc_alg</span><span class="o">:::</span><span class="n">SMC</span><span class="x">,</span> <span class="n">parameters_algs</span><span class="o">::</span><span class="kt">Tuple</span><span class="x">{</span><span class="n">MH</span><span class="x">})</span>
-</code></pre></div></div>
-
-<p>Particle independant Metropolis–Hastings and Particle marginal Metropolis–Hastings samplers.</p>
-
-<p>Note that this method is particle-based, and arrays of variables must be stored in a <a href="/dev/docs/library/#Libtask.TArray"><code class="language-plaintext highlighter-rouge">TArray</code></a> object.</p>
-
-<p>Usage:</p>
-
-<div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">alg</span> <span class="o">=</span> <span class="n">PMMH</span><span class="x">(</span><span class="mi">100</span><span class="x">,</span> <span class="n">SMC</span><span class="x">(</span><span class="mi">20</span><span class="x">,</span> <span class="o">:</span><span class="n">v1</span><span class="x">),</span> <span class="n">MH</span><span class="x">(</span><span class="mi">1</span><span class="x">,</span><span class="o">:</span><span class="n">v2</span><span class="x">))</span>
-<span class="n">alg</span> <span class="o">=</span> <span class="n">PMMH</span><span class="x">(</span><span class="mi">100</span><span class="x">,</span> <span class="n">SMC</span><span class="x">(</span><span class="mi">20</span><span class="x">,</span> <span class="o">:</span><span class="n">v1</span><span class="x">),</span> <span class="n">MH</span><span class="x">(</span><span class="mi">1</span><span class="x">,(</span><span class="o">:</span><span class="n">v2</span><span class="x">,</span> <span class="x">(</span><span class="n">x</span><span class="x">)</span> <span class="o">-&gt;</span> <span class="n">Normal</span><span class="x">(</span><span class="n">x</span><span class="x">,</span> <span class="mi">1</span><span class="x">))))</span>
-</code></pre></div></div>
-
-<p>Arguments:</p>
-
-<ul>
-  <li><code class="language-plaintext highlighter-rouge">n_iters::Int</code> : Number of iterations to run.</li>
-  <li><code class="language-plaintext highlighter-rouge">smc_alg:::SMC</code> : An <a href="/dev/docs/library/#Turing.Inference.SMC"><code class="language-plaintext highlighter-rouge">SMC</code></a> algorithm to use.</li>
-  <li><code class="language-plaintext highlighter-rouge">parameters_algs::Tuple{MH}</code> : An <a href="/dev/docs/library/#Turing.Inference.MH"><code class="language-plaintext highlighter-rouge">MH</code></a> algorithm, which includes a</li>
-</ul>
-
-<p>sample space specification.</p>
-
-<p><a target="_blank" href="https://github.com/TuringLang/Turing.jl/blob/d736f7ba7db103a167d8852bed8739fab7d664c2/src/contrib/inference/AdvancedSMCExtensions.jl#L6-L28" class="documenter-source">source</a><br /></p>
-
-<h3 id="-turinginferencesghmc--type"><a id="Turing.Inference.SGHMC" href="#Turing.Inference.SGHMC">#</a> <strong><code class="language-plaintext highlighter-rouge">Turing.Inference.SGHMC</code></strong> — <em>Type</em>.</h3>
-
-<div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">SGHMC</span><span class="x">(</span><span class="n">n_iters</span><span class="o">::</span><span class="kt">Int</span><span class="x">,</span> <span class="n">learning_rate</span><span class="o">::</span><span class="kt">Float64</span><span class="x">,</span> <span class="n">momentum_decay</span><span class="o">::</span><span class="kt">Float64</span><span class="x">)</span>
-</code></pre></div></div>
-
-<p>Stochastic Gradient Hamiltonian Monte Carlo sampler.</p>
-
-<p>Usage:</p>
-
-<div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">SGHMC</span><span class="x">(</span><span class="mi">1000</span><span class="x">,</span> <span class="mf">0.01</span><span class="x">,</span> <span class="mf">0.1</span><span class="x">)</span>
-</code></pre></div></div>
-
-<p>Arguments:</p>
-
-<ul>
-  <li><code class="language-plaintext highlighter-rouge">n_iters::Int</code> : Number of samples to pull.</li>
-  <li><code class="language-plaintext highlighter-rouge">learning_rate::Float64</code> : The learning rate.</li>
-  <li><code class="language-plaintext highlighter-rouge">momentum_decay::Float64</code> : Momentum decay variable.</li>
-</ul>
-
-<p><a target="_blank" href="https://github.com/TuringLang/Turing.jl/blob/d736f7ba7db103a167d8852bed8739fab7d664c2/src/contrib/inference/sghmc.jl#L10-L27" class="documenter-source">source</a><br /></p>
-
-<h3 id="-turinginferencesgld--type"><a id="Turing.Inference.SGLD" href="#Turing.Inference.SGLD">#</a> <strong><code class="language-plaintext highlighter-rouge">Turing.Inference.SGLD</code></strong> — <em>Type</em>.</h3>
-
-<div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">SGLD</span><span class="x">(</span><span class="n">n_iters</span><span class="o">::</span><span class="kt">Int</span><span class="x">,</span> <span class="n">ϵ</span><span class="o">::</span><span class="kt">Float64</span><span class="x">)</span>
-</code></pre></div></div>
-
-<p>Stochastic Gradient Langevin Dynamics sampler.</p>
-
-<p>Usage:</p>
-
-<div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">SGLD</span><span class="x">(</span><span class="mi">1000</span><span class="x">,</span> <span class="mf">0.5</span><span class="x">)</span>
-</code></pre></div></div>
-
-<p>Arguments:</p>
-
-<ul>
-  <li><code class="language-plaintext highlighter-rouge">n_iters::Int</code> : Number of samples to pull.</li>
-  <li><code class="language-plaintext highlighter-rouge">ϵ::Float64</code> : The scaling factor for the learing rate.</li>
-</ul>
-
-<p>Reference:</p>
-
-<p>Welling, M., &amp; Teh, Y. W. (2011).  Bayesian learning via stochastic gradient Langevin dynamics. In Proceedings of the 28th international conference on machine learning (ICML-11) (pp. 681-688).</p>
-
-<p><a target="_blank" href="https://github.com/TuringLang/Turing.jl/blob/d736f7ba7db103a167d8852bed8739fab7d664c2/src/contrib/inference/sghmc.jl#L116-L136" class="documenter-source">source</a><br /></p>
+<p><a target="_blank" href="https://github.com/TuringLang/Turing.jl/blob/72e221a3b9308a3b6e5fd8d2ecafcc0d0799379d/src/inference/AdvancedSMC.jl#L156-L169" class="documenter-source">source</a><br /></p>
 
 <h3 id="-turinginferencesmc--type"><a id="Turing.Inference.SMC" href="#Turing.Inference.SMC">#</a> <strong><code class="language-plaintext highlighter-rouge">Turing.Inference.SMC</code></strong> — <em>Type</em>.</h3>
 
@@ -1029,7 +954,7 @@ IS()
 <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">SMC</span><span class="x">()</span>
 </code></pre></div></div>
 
-<p><a target="_blank" href="https://github.com/TuringLang/Turing.jl/blob/d736f7ba7db103a167d8852bed8739fab7d664c2/src/inference/AdvancedSMC.jl#L35-L54" class="documenter-source">source</a><br /></p>
+<p><a target="_blank" href="https://github.com/TuringLang/Turing.jl/blob/72e221a3b9308a3b6e5fd8d2ecafcc0d0799379d/src/inference/AdvancedSMC.jl#L35-L54" class="documenter-source">source</a><br /></p>
 
 <p><a id="Distributions-1"></a></p>
 
@@ -1042,7 +967,7 @@ IS()
 
 <p>A distribution with support and density of one everywhere.</p>
 
-<p><a target="_blank" href="https://github.com/TuringLang/Turing.jl/blob/d736f7ba7db103a167d8852bed8739fab7d664c2/src/stdlib/distributions.jl#L4-L9" class="documenter-source">source</a><br /></p>
+<p><a target="_blank" href="https://github.com/TuringLang/Turing.jl/blob/72e221a3b9308a3b6e5fd8d2ecafcc0d0799379d/src/stdlib/distributions.jl#L4-L9" class="documenter-source">source</a><br /></p>
 
 <h3 id="-turingflatpos--type"><a id="Turing.FlatPos" href="#Turing.FlatPos">#</a> <strong><code class="language-plaintext highlighter-rouge">Turing.FlatPos</code></strong> — <em>Type</em>.</h3>
 
@@ -1051,7 +976,7 @@ IS()
 
 <p>A distribution with a lower bound of <code class="language-plaintext highlighter-rouge">l</code> and a density of one at every <code class="language-plaintext highlighter-rouge">x</code> above <code class="language-plaintext highlighter-rouge">l</code>.</p>
 
-<p><a target="_blank" href="https://github.com/TuringLang/Turing.jl/blob/d736f7ba7db103a167d8852bed8739fab7d664c2/src/stdlib/distributions.jl#L20-L25" class="documenter-source">source</a><br /></p>
+<p><a target="_blank" href="https://github.com/TuringLang/Turing.jl/blob/72e221a3b9308a3b6e5fd8d2ecafcc0d0799379d/src/stdlib/distributions.jl#L20-L25" class="documenter-source">source</a><br /></p>
 
 <h3 id="-turingbinomiallogit--type"><a id="Turing.BinomialLogit" href="#Turing.BinomialLogit">#</a> <strong><code class="language-plaintext highlighter-rouge">Turing.BinomialLogit</code></strong> — <em>Type</em>.</h3>
 
@@ -1060,7 +985,7 @@ IS()
 
 <p>A univariate binomial logit distribution.</p>
 
-<p><a target="_blank" href="https://github.com/TuringLang/Turing.jl/blob/d736f7ba7db103a167d8852bed8739fab7d664c2/src/stdlib/distributions.jl#L40-L44" class="documenter-source">source</a><br /></p>
+<p><a target="_blank" href="https://github.com/TuringLang/Turing.jl/blob/72e221a3b9308a3b6e5fd8d2ecafcc0d0799379d/src/stdlib/distributions.jl#L40-L44" class="documenter-source">source</a><br /></p>
 
 <h3 id="-turingvecbinomiallogit--type"><a id="Turing.VecBinomialLogit" href="#Turing.VecBinomialLogit">#</a> <strong><code class="language-plaintext highlighter-rouge">Turing.VecBinomialLogit</code></strong> — <em>Type</em>.</h3>
 
@@ -1069,7 +994,7 @@ IS()
 
 <p>A multivariate binomial logit distribution.</p>
 
-<p><a target="_blank" href="https://github.com/TuringLang/Turing.jl/blob/d736f7ba7db103a167d8852bed8739fab7d664c2/src/stdlib/distributions.jl#L50-L54" class="documenter-source">source</a><br /></p>
+<p><a target="_blank" href="https://github.com/TuringLang/Turing.jl/blob/72e221a3b9308a3b6e5fd8d2ecafcc0d0799379d/src/stdlib/distributions.jl#L50-L54" class="documenter-source">source</a><br /></p>
 
 <h3 id="-turingorderedlogistic--type"><a id="Turing.OrderedLogistic" href="#Turing.OrderedLogistic">#</a> <strong><code class="language-plaintext highlighter-rouge">Turing.OrderedLogistic</code></strong> — <em>Type</em>.</h3>
 
@@ -1078,7 +1003,7 @@ IS()
 
 <p>An ordered logistic distribution.</p>
 
-<p><a target="_blank" href="https://github.com/TuringLang/Turing.jl/blob/d736f7ba7db103a167d8852bed8739fab7d664c2/src/stdlib/distributions.jl#L73-L77" class="documenter-source">source</a><br /></p>
+<p><a target="_blank" href="https://github.com/TuringLang/Turing.jl/blob/72e221a3b9308a3b6e5fd8d2ecafcc0d0799379d/src/stdlib/distributions.jl#L73-L77" class="documenter-source">source</a><br /></p>
 
 <p><a id="Data-Structures-1"></a></p>
 
