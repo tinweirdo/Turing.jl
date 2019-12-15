@@ -766,6 +766,44 @@
 
 <p>to inspect the type instabilities in the model.</p>
 
+<p><a id="Reuse-Computations-in-Gibbs-Sampling-1"></a></p>
+
+<h2 id="reuse-computations-in-gibbs-sampling">Reuse Computations in Gibbs Sampling</h2>
+
+<p>Often when performing Gibbs sampling, one can save computational time by caching the output of expensive functions. The cached values can then be reused in future Gibbs sub-iterations which do not change the inputs to this expensive function. For example in the following model:</p>
+
+<div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@model</span> <span class="n">demo</span><span class="x">(</span><span class="n">x</span><span class="x">)</span> <span class="o">=</span> <span class="k">begin</span>
+    <span class="n">a</span> <span class="o">~</span> <span class="n">Gamma</span><span class="x">()</span>
+    <span class="n">b</span> <span class="o">~</span> <span class="n">Normal</span><span class="x">()</span>
+    <span class="n">c</span> <span class="o">=</span> <span class="n">function1</span><span class="x">(</span><span class="n">a</span><span class="x">)</span>
+    <span class="n">d</span> <span class="o">=</span> <span class="n">function2</span><span class="x">(</span><span class="n">b</span><span class="x">)</span>
+    <span class="n">x</span> <span class="o">.~</span> <span class="n">Normal</span><span class="x">(</span><span class="n">c</span><span class="x">,</span> <span class="n">d</span><span class="x">)</span>
+<span class="k">end</span>
+<span class="n">alg</span> <span class="o">=</span> <span class="n">Gibbs</span><span class="x">(</span><span class="n">MH</span><span class="x">(</span><span class="o">:</span><span class="n">a</span><span class="x">),</span> <span class="n">MH</span><span class="x">(</span><span class="o">:</span><span class="n">b</span><span class="x">))</span>
+<span class="n">sample</span><span class="x">(</span><span class="n">demo</span><span class="x">(</span><span class="n">zeros</span><span class="x">(</span><span class="mi">10</span><span class="x">)),</span> <span class="n">alg</span><span class="x">,</span> <span class="mi">1000</span><span class="x">)</span>
+</code></pre></div></div>
+
+<p>when only updating <code class="language-plaintext highlighter-rouge">a</code> in a Gibbs sub-iteration, keeping <code class="language-plaintext highlighter-rouge">b</code> the same, the value of <code class="language-plaintext highlighter-rouge">d</code> doesn’t change. And when only updating <code class="language-plaintext highlighter-rouge">b</code>, the value of <code class="language-plaintext highlighter-rouge">c</code> doesn’t change. However, if <code class="language-plaintext highlighter-rouge">function1</code> and <code class="language-plaintext highlighter-rouge">function2</code> are expensive and are both run in every Gibbs sub-iteration, a lot of time would be spent computing values that we already computed before. Such a problem can be overcome using <code class="language-plaintext highlighter-rouge">Memoization.jl</code>. Memoizing a function lets us store and reuse the output of the function for every input it is called with. This has a slight time overhead but for expensive functions, the savings will be far greater.</p>
+
+<p>To use <code class="language-plaintext highlighter-rouge">Memoization.jl</code>, simply define memoized versions of <code class="language-plaintext highlighter-rouge">function1</code> and <code class="language-plaintext highlighter-rouge">function2</code> as such:</p>
+
+<div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">using</span> <span class="n">Memoization</span>
+
+<span class="nd">@memoize</span> <span class="n">memoized_function1</span><span class="x">(</span><span class="n">args</span><span class="o">...</span><span class="x">)</span> <span class="o">=</span> <span class="n">function1</span><span class="x">(</span><span class="n">args</span><span class="o">...</span><span class="x">)</span>
+<span class="nd">@memoize</span> <span class="n">memoized_function2</span><span class="x">(</span><span class="n">args</span><span class="o">...</span><span class="x">)</span> <span class="o">=</span> <span class="n">function2</span><span class="x">(</span><span class="n">args</span><span class="o">...</span><span class="x">)</span>
+</code></pre></div></div>
+
+<p>Then define the <code class="language-plaintext highlighter-rouge">Turing</code> model using the new functions as such:</p>
+
+<div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@model</span> <span class="n">demo</span><span class="x">(</span><span class="n">x</span><span class="x">)</span> <span class="o">=</span> <span class="k">begin</span>
+    <span class="n">a</span> <span class="o">~</span> <span class="n">Gamma</span><span class="x">()</span>
+    <span class="n">b</span> <span class="o">~</span> <span class="n">Normal</span><span class="x">()</span>
+    <span class="n">c</span> <span class="o">=</span> <span class="n">memoized_function1</span><span class="x">(</span><span class="n">a</span><span class="x">)</span>
+    <span class="n">d</span> <span class="o">=</span> <span class="n">memoized_function2</span><span class="x">(</span><span class="n">b</span><span class="x">)</span>
+    <span class="n">x</span> <span class="o">.~</span> <span class="n">Normal</span><span class="x">(</span><span class="n">c</span><span class="x">,</span> <span class="n">d</span><span class="x">)</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
 
     <script
   src="https://code.jquery.com/jquery-3.3.1.min.js"
