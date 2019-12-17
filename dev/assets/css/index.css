@@ -167,15 +167,15 @@ button:focus {
 }
 
 .resource-card.slack:before {
-    background-image: url(/refs/heads/master/assets/images/logo-slack.svg);
+    background-image: url(/dev/assets/images/logo-slack.svg);
 }
 
 .resource-card.github:before {
-    background-image: url(/refs/heads/master/assets/images/logo-github.svg);
+    background-image: url(/dev/assets/images/logo-github.svg);
 }
 
 .resource-card.turing-resource:before {
-    background-image: url(/refs/heads/master/assets/images/turing-logo.svg);
+    background-image: url(/dev/assets/images/turing-logo.svg);
 }
 
 .resource-card .card-body {
