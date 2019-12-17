@@ -1,1 +1,1 @@
-Sitemap: /dev/sitemap.xml
+Sitemap: /refs/heads/master/sitemap.xml
