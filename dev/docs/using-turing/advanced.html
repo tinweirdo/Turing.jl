@@ -759,19 +759,25 @@
     <span class="n">x</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">args</span><span class="o">.</span><span class="n">x</span>
 
     <span class="c"># Assume s has an InverseGamma distribution.</span>
-    <span class="n">s</span><span class="x">,</span> <span class="n">lp</span> <span class="o">=</span> <span class="n">Turing</span><span class="o">.</span><span class="n">assume</span><span class="x">(</span><span class="n">sampler</span><span class="x">,</span>
-                <span class="n">InverseGamma</span><span class="x">(</span><span class="mi">2</span><span class="x">,</span> <span class="mi">3</span><span class="x">),</span>
-                <span class="n">Turing</span><span class="o">.</span><span class="nd">@varname</span><span class="x">(</span><span class="n">s</span><span class="x">),</span> <span class="n">vi</span><span class="x">)</span>
+    <span class="n">s</span><span class="x">,</span> <span class="n">lp</span> <span class="o">=</span> <span class="n">Turing</span><span class="o">.</span><span class="n">Inference</span><span class="o">.</span><span class="n">tilde</span><span class="x">(</span>
+        <span class="n">ctx</span><span class="x">,</span>
+        <span class="n">sampler</span><span class="x">,</span>
+        <span class="n">InverseGamma</span><span class="x">(</span><span class="mi">2</span><span class="x">,</span> <span class="mi">3</span><span class="x">),</span>
+        <span class="n">Turing</span><span class="o">.</span><span class="nd">@varname</span><span class="x">(</span><span class="n">s</span><span class="x">),</span>
+        <span class="x">(),</span>
+        <span class="n">vi</span><span class="x">,</span>
+    <span class="x">)</span>
 
     <span class="c"># Add the lp to the accumulated logp.</span>
     <span class="n">vi</span><span class="o">.</span><span class="n">logp</span> <span class="o">+=</span> <span class="n">lp</span>
 
     <span class="c"># Assume m has a Normal distribution.</span>
     <span class="n">m</span><span class="x">,</span> <span class="n">lp</span> <span class="o">=</span> <span class="n">Turing</span><span class="o">.</span><span class="n">Inference</span><span class="o">.</span><span class="n">tilde</span><span class="x">(</span>
-        <span class="n">ctx</span><span class="x">,</span> 
-        <span class="n">sampler</span><span class="x">,</span> 
-        <span class="n">Normal</span><span class="x">(</span><span class="mi">0</span><span class="x">,</span> <span class="n">sqrt</span><span class="x">(</span><span class="n">s</span><span class="x">)),</span> 
-        <span class="n">Turing</span><span class="o">.</span><span class="nd">@varname</span><span class="x">(</span><span class="n">m</span><span class="x">),</span> 
+        <span class="n">ctx</span><span class="x">,</span>
+        <span class="n">sampler</span><span class="x">,</span>
+        <span class="n">Normal</span><span class="x">(</span><span class="mi">0</span><span class="x">,</span> <span class="n">sqrt</span><span class="x">(</span><span class="n">s</span><span class="x">)),</span>
+        <span class="n">Turing</span><span class="o">.</span><span class="nd">@varname</span><span class="x">(</span><span class="n">m</span><span class="x">),</span>
+        <span class="x">(),</span>
         <span class="n">vi</span><span class="x">,</span>
     <span class="x">)</span>
 
@@ -790,7 +796,7 @@
 <span class="k">end</span>
 
 <span class="c"># Instantiate a Model object.</span>
-<span class="n">model</span> <span class="o">=</span> <span class="n">Turing</span><span class="o">.</span><span class="n">Model</span><span class="x">(</span><span class="n">mf</span><span class="x">,</span> <span class="n">data</span><span class="x">)</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">Turing</span><span class="o">.</span><span class="n">Model</span><span class="x">(</span><span class="n">mf</span><span class="x">,</span> <span class="n">data</span><span class="x">,</span> <span class="n">Turing</span><span class="o">.</span><span class="n">Core</span><span class="o">.</span><span class="n">ModelGen</span><span class="x">{()}(</span><span class="nb">nothing</span><span class="x">,</span> <span class="nb">nothing</span><span class="x">))</span>
 
 <span class="c"># Sample the model.</span>
 <span class="n">chain</span> <span class="o">=</span> <span class="n">sample</span><span class="x">(</span><span class="n">model</span><span class="x">,</span> <span class="n">HMC</span><span class="x">(</span><span class="mf">0.1</span><span class="x">,</span> <span class="mi">5</span><span class="x">),</span> <span class="mi">1000</span><span class="x">)</span>
