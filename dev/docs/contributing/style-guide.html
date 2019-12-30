@@ -794,14 +794,14 @@ au FileType julia setlocal colorcolumn=93 " Highlights column 93 to help maintai
 <p>When using long-form functions <a href="https://groups.google.com/forum/#!topic/julia-users/4RVR8qQDrUg">always use the <code class="language-plaintext highlighter-rouge">return</code> keyword</a>:</p>
 
 <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Yes:</span>
-<span class="k">function</span><span class="nf"> fnc</span><span class="x">(</span><span class="n">x</span><span class="o">::</span><span class="n">T</span><span class="x">)</span> <span class="k">where</span> <span class="n">T</span>
-    <span class="n">result</span> <span class="o">=</span> <span class="n">zero</span><span class="x">(</span><span class="n">T</span><span class="x">)</span>
+<span class="k">function</span><span class="nf"> fnc</span><span class="x">(</span><span class="n">x</span><span class="x">)</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">zero</span><span class="x">(</span><span class="n">x</span><span class="x">)</span>
     <span class="n">result</span> <span class="o">+=</span> <span class="n">fna</span><span class="x">(</span><span class="n">x</span><span class="x">)</span>
     <span class="k">return</span> <span class="n">result</span>
 <span class="k">end</span>
 <span class="c"># No:</span>
-<span class="k">function</span><span class="nf"> fnc</span><span class="x">(</span><span class="n">x</span><span class="o">::</span><span class="n">T</span><span class="x">)</span> <span class="k">where</span> <span class="n">T</span>
-    <span class="n">result</span> <span class="o">=</span> <span class="n">zero</span><span class="x">(</span><span class="n">T</span><span class="x">)</span>
+<span class="k">function</span><span class="nf"> fnc</span><span class="x">(</span><span class="n">x</span><span class="x">)</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">zero</span><span class="x">(</span><span class="n">x</span><span class="x">)</span>
     <span class="n">result</span> <span class="o">+=</span> <span class="n">fna</span><span class="x">(</span><span class="n">x</span><span class="x">)</span>
 <span class="k">end</span>
 
