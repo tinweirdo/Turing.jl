@@ -20,9 +20,9 @@ version = "1.0.0"
 
 [[AdvancedHMC]]
 deps = ["ArgCheck", "InplaceOps", "LazyArrays", "LinearAlgebra", "Parameters", "ProgressMeter", "Random", "Requires", "Statistics", "StatsBase", "StatsFuns"]
-git-tree-sha1 = "45de58ce91a0d109e785953a2788b17b0900af3a"
+git-tree-sha1 = "e89f912db0be73f91ae9ff6bcc22c73ba1893db5"
 uuid = "0bf59076-c3b1-5ca4-86bd-e02cd72cde3d"
-version = "0.2.16"
+version = "0.2.18"
 
 [[ArgCheck]]
 deps = ["Random"]
