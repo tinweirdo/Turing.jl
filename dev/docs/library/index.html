@@ -676,9 +676,7 @@
   <li><a href="/dev/docs/library/#Turing.Flat"><code class="language-plaintext highlighter-rouge">Turing.Flat</code></a></li>
   <li><a href="/dev/docs/library/#Turing.FlatPos"><code class="language-plaintext highlighter-rouge">Turing.FlatPos</code></a></li>
   <li><a href="/dev/docs/library/#Turing.OrderedLogistic"><code class="language-plaintext highlighter-rouge">Turing.OrderedLogistic</code></a></li>
-  <li><a href="/dev/docs/library/#Turing.Sampler"><code class="language-plaintext highlighter-rouge">Turing.Sampler</code></a></li>
   <li><a href="/dev/docs/library/#Turing.VecBinomialLogit"><code class="language-plaintext highlighter-rouge">Turing.VecBinomialLogit</code></a></li>
-  <li><a href="/dev/docs/library/#Turing.Core.@model"><code class="language-plaintext highlighter-rouge">Turing.Core.@model</code></a></li>
   <li><a href="/dev/docs/library/#Turing.Inference.Gibbs"><code class="language-plaintext highlighter-rouge">Turing.Inference.Gibbs</code></a></li>
   <li><a href="/dev/docs/library/#Turing.Inference.HMC"><code class="language-plaintext highlighter-rouge">Turing.Inference.HMC</code></a></li>
   <li><a href="/dev/docs/library/#Turing.Inference.HMCDA"><code class="language-plaintext highlighter-rouge">Turing.Inference.HMCDA</code></a></li>
@@ -695,7 +693,7 @@
 
 <h2 id="modelling">Modelling</h2>
 
-<h3 id="-turingcoremodel--macro"><a id="Turing.Core.@model" href="#Turing.Core.@model">#</a> <strong><code class="language-plaintext highlighter-rouge">Turing.Core.@model</code></strong> — <em>Macro</em>.</h3>
+<h3 id="-dynamicpplmodel--macro"><a id="DynamicPPL.@model" href="#DynamicPPL.@model">#</a> <strong><code class="language-plaintext highlighter-rouge">DynamicPPL.@model</code></strong> — <em>Macro</em>.</h3>
 
 <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@model</span><span class="x">(</span><span class="n">body</span><span class="x">)</span>
 </code></pre></div></div>
@@ -711,60 +709,13 @@
 <span class="k">end</span>
 </code></pre></div></div>
 
-<p>Expanded model definition</p>
-
-<div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Allows passing arguments as kwargs</span>
-<span class="n">model_generator</span><span class="x">(;</span> <span class="n">x</span> <span class="o">=</span> <span class="nb">nothing</span><span class="x">,</span> <span class="n">y</span> <span class="o">=</span> <span class="nb">nothing</span><span class="x">))</span> <span class="o">=</span> <span class="n">model_generator</span><span class="x">(</span><span class="n">x</span><span class="x">,</span> <span class="n">y</span><span class="x">)</span>
-<span class="k">function</span><span class="nf"> model_generator</span><span class="x">(</span><span class="n">x</span> <span class="o">=</span> <span class="nb">nothing</span><span class="x">,</span> <span class="n">y</span> <span class="o">=</span> <span class="nb">nothing</span><span class="x">)</span>
-    <span class="n">pvars</span><span class="x">,</span> <span class="n">dvars</span> <span class="o">=</span> <span class="n">Turing</span><span class="o">.</span><span class="n">get_vars</span><span class="x">(</span><span class="kt">Tuple</span><span class="x">{</span><span class="o">:</span><span class="n">x</span><span class="x">,</span> <span class="o">:</span><span class="n">y</span><span class="x">},</span> <span class="x">(</span><span class="n">x</span> <span class="o">=</span> <span class="n">x</span><span class="x">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">y</span><span class="x">))</span>
-    <span class="n">data</span> <span class="o">=</span> <span class="n">Turing</span><span class="o">.</span><span class="n">get_data</span><span class="x">(</span><span class="n">dvars</span><span class="x">,</span> <span class="x">(</span><span class="n">x</span> <span class="o">=</span> <span class="n">x</span><span class="x">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">y</span><span class="x">))</span>
-    <span class="n">defaults</span> <span class="o">=</span> <span class="n">Turing</span><span class="o">.</span><span class="n">get_default_values</span><span class="x">(</span><span class="n">dvars</span><span class="x">,</span> <span class="x">(</span><span class="n">x</span> <span class="o">=</span> <span class="n">default_x</span><span class="x">,</span> <span class="n">y</span> <span class="o">=</span> <span class="nb">nothing</span><span class="x">))</span>
-
-    <span class="n">inner_function</span><span class="x">(</span><span class="n">sampler</span><span class="o">::</span><span class="n">Turing</span><span class="o">.</span><span class="n">AbstractSampler</span><span class="x">,</span> <span class="n">model</span><span class="x">)</span> <span class="o">=</span> <span class="n">inner_function</span><span class="x">(</span><span class="n">model</span><span class="x">)</span>
-    <span class="k">function</span><span class="nf"> inner_function</span><span class="x">(</span><span class="n">model</span><span class="x">)</span>
-        <span class="k">return</span> <span class="n">inner_function</span><span class="x">(</span><span class="n">Turing</span><span class="o">.</span><span class="n">VarInfo</span><span class="x">(),</span> <span class="n">Turing</span><span class="o">.</span><span class="n">SampleFromPrior</span><span class="x">(),</span> <span class="n">model</span><span class="x">)</span>
-    <span class="k">end</span>
-    <span class="k">function</span><span class="nf"> inner_function</span><span class="x">(</span><span class="n">vi</span><span class="o">::</span><span class="n">Turing</span><span class="o">.</span><span class="n">VarInfo</span><span class="x">,</span> <span class="n">model</span><span class="x">)</span>
-        <span class="k">return</span> <span class="n">inner_function</span><span class="x">(</span><span class="n">vi</span><span class="x">,</span> <span class="n">Turing</span><span class="o">.</span><span class="n">SampleFromPrior</span><span class="x">(),</span> <span class="n">model</span><span class="x">)</span>
-    <span class="k">end</span>
-    <span class="c"># Define the main inner function</span>
-    <span class="k">function</span><span class="nf"> inner_function</span><span class="x">(</span><span class="n">vi</span><span class="o">::</span><span class="n">Turing</span><span class="o">.</span><span class="n">VarInfo</span><span class="x">,</span> <span class="n">sampler</span><span class="o">::</span><span class="n">Turing</span><span class="o">.</span><span class="n">AbstractSampler</span><span class="x">,</span> <span class="n">model</span><span class="x">)</span>
-        <span class="kd">local</span> <span class="n">x</span>
-        <span class="k">if</span> <span class="n">isdefined</span><span class="x">(</span><span class="n">model</span><span class="o">.</span><span class="n">data</span><span class="x">,</span> <span class="o">:</span><span class="n">x</span><span class="x">)</span>
-            <span class="k">if</span> <span class="n">model</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">x</span> <span class="k">isa</span> <span class="kt">Type</span> <span class="o">&amp;&amp;</span> <span class="x">(</span><span class="n">model</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">x</span> <span class="o">&lt;:</span> <span class="kt">AbstractFloat</span> <span class="o">||</span> <span class="n">model</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">x</span> <span class="o">&lt;:</span> <span class="kt">AbstractArray</span><span class="x">)</span>
-                <span class="n">x</span> <span class="o">=</span> <span class="n">Turing</span><span class="o">.</span><span class="n">Core</span><span class="o">.</span><span class="n">get_matching_type</span><span class="x">(</span><span class="n">sampler</span><span class="x">,</span> <span class="n">vi</span><span class="x">,</span> <span class="n">model</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">x</span><span class="x">)</span>
-            <span class="k">else</span>
-                <span class="n">x</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">x</span>
-            <span class="k">end</span>
-        <span class="k">else</span>
-            <span class="n">x</span> <span class="o">=</span> <span class="n">model_defaults</span><span class="o">.</span><span class="n">x</span>
-        <span class="k">end</span>
-        <span class="kd">local</span> <span class="n">y</span>
-        <span class="k">if</span> <span class="n">isdefined</span><span class="x">(</span><span class="n">model</span><span class="o">.</span><span class="n">data</span><span class="x">,</span> <span class="o">:</span><span class="n">y</span><span class="x">)</span>
-            <span class="k">if</span> <span class="n">model</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">y</span> <span class="k">isa</span> <span class="kt">Type</span> <span class="o">&amp;&amp;</span> <span class="x">(</span><span class="n">model</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">y</span> <span class="o">&lt;:</span> <span class="kt">AbstractFloat</span> <span class="o">||</span> <span class="n">model</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">y</span> <span class="o">&lt;:</span> <span class="kt">AbstractArray</span><span class="x">)</span>
-                <span class="n">y</span> <span class="o">=</span> <span class="n">Turing</span><span class="o">.</span><span class="n">Core</span><span class="o">.</span><span class="n">get_matching_type</span><span class="x">(</span><span class="n">sampler</span><span class="x">,</span> <span class="n">vi</span><span class="x">,</span> <span class="n">model</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">y</span><span class="x">)</span>
-            <span class="k">else</span>
-                <span class="n">y</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">y</span>
-            <span class="k">end</span>
-        <span class="k">else</span>
-            <span class="n">y</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">defaults</span><span class="o">.</span><span class="n">y</span>
-        <span class="k">end</span>
-
-        <span class="n">vi</span><span class="o">.</span><span class="n">logp</span> <span class="o">=</span> <span class="n">zero</span><span class="x">(</span><span class="kt">Real</span><span class="x">)</span>
-        <span class="o">...</span>
-    <span class="k">end</span>
-    <span class="n">model</span> <span class="o">=</span> <span class="n">Turing</span><span class="o">.</span><span class="n">Model</span><span class="x">{</span><span class="n">pvars</span><span class="x">,</span> <span class="n">dvars</span><span class="x">}(</span><span class="n">inner_function</span><span class="x">,</span> <span class="n">data</span><span class="x">,</span> <span class="n">defaults</span><span class="x">)</span>
-    <span class="k">return</span> <span class="n">model</span>
-<span class="k">end</span>
-</code></pre></div></div>
-
-<p>Generating a model: <code class="language-plaintext highlighter-rouge">model_generator(x_value)::Model</code>.</p>
+<p>To generate a <code class="language-plaintext highlighter-rouge">Model</code>, call <code class="language-plaintext highlighter-rouge">model_generator(x_value)</code>.</p>
 
 <p><a id="Samplers-1"></a></p>
 
 <h2 id="samplers">Samplers</h2>
 
-<h3 id="-turingsampler--type"><a id="Turing.Sampler" href="#Turing.Sampler">#</a> <strong><code class="language-plaintext highlighter-rouge">Turing.Sampler</code></strong> — <em>Type</em>.</h3>
+<h3 id="-dynamicpplsampler--type"><a id="DynamicPPL.Sampler" href="#DynamicPPL.Sampler">#</a> <strong><code class="language-plaintext highlighter-rouge">DynamicPPL.Sampler</code></strong> — <em>Type</em>.</h3>
 
 <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Sampler</span><span class="x">{</span><span class="n">T</span><span class="x">}</span>
 </code></pre></div></div>
@@ -776,7 +727,7 @@
   <li>A method of <code class="language-plaintext highlighter-rouge">sample</code> function that produces results of inference, which is where actual inference happens.</li>
 </ol>
 
-<p>Turing translates models to chunks that call the modelling functions at specified points. The dispatch is based on the value of a <code class="language-plaintext highlighter-rouge">sampler</code> variable. To include a new inference algorithm implements the requirements mentioned above in a separate file, then include that file at the end of this one.</p>
+<p>DynamicPPL translates models to chunks that call the modelling functions at specified points. The dispatch is based on the value of a <code class="language-plaintext highlighter-rouge">sampler</code> variable. To include a new inference algorithm implements the requirements mentioned above in a separate file, then include that file at the end of this one.</p>
 
 <h3 id="-turinginferencegibbs--type"><a id="Turing.Inference.Gibbs" href="#Turing.Inference.Gibbs">#</a> <strong><code class="language-plaintext highlighter-rouge">Turing.Inference.Gibbs</code></strong> — <em>Type</em>.</h3>
 
@@ -799,7 +750,7 @@
 
 <p><strong>than is HMC.</strong></p>
 
-<p>alg = Gibbs(1000, HMC(1, 0.2, 3, :v1), PG(20, 1, :v2)) ```</p>
+<p>alg = Gibbs(HMC(0.2, 3, :v1), PG(20, :v2)) ```</p>
 
 <p>Tips:</p>
 
@@ -837,10 +788,10 @@
 <p><code class="language-plaintext highlighter-rouge">step_size</code> parameter, e.g.</p>
 
 <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Original step_size</span>
-<span class="n">sample</span><span class="x">(</span><span class="n">gdemo</span><span class="x">([</span><span class="mf">1.5</span><span class="x">,</span> <span class="mi">2</span><span class="x">]),</span> <span class="n">HMC</span><span class="x">(</span><span class="mi">1000</span><span class="x">,</span> <span class="mf">0.1</span><span class="x">,</span> <span class="mi">10</span><span class="x">))</span>
+<span class="n">sample</span><span class="x">(</span><span class="n">gdemo</span><span class="x">([</span><span class="mf">1.5</span><span class="x">,</span> <span class="mi">2</span><span class="x">]),</span> <span class="n">HMC</span><span class="x">(</span><span class="mf">0.1</span><span class="x">,</span> <span class="mi">10</span><span class="x">),</span> <span class="mi">1000</span><span class="x">)</span>
 
 <span class="c"># Reduced step_size.</span>
-<span class="n">sample</span><span class="x">(</span><span class="n">gdemo</span><span class="x">([</span><span class="mf">1.5</span><span class="x">,</span> <span class="mi">2</span><span class="x">]),</span> <span class="n">HMC</span><span class="x">(</span><span class="mi">1000</span><span class="x">,</span> <span class="mf">0.01</span><span class="x">,</span> <span class="mi">10</span><span class="x">))</span>
+<span class="n">sample</span><span class="x">(</span><span class="n">gdemo</span><span class="x">([</span><span class="mf">1.5</span><span class="x">,</span> <span class="mi">2</span><span class="x">]),</span> <span class="n">HMC</span><span class="x">(</span><span class="mf">0.01</span><span class="x">,</span> <span class="mi">10</span><span class="x">),</span> <span class="mi">1000</span><span class="x">)</span>
 </code></pre></div></div>
 
 <h3 id="-turinginferencehmcda--type"><a id="Turing.Inference.HMCDA" href="#Turing.Inference.HMCDA">#</a> <strong><code class="language-plaintext highlighter-rouge">Turing.Inference.HMCDA</code></strong> — <em>Type</em>.</h3>
@@ -900,28 +851,28 @@
 
 <h3 id="-turinginferencemh--type"><a id="Turing.Inference.MH" href="#Turing.Inference.MH">#</a> <strong><code class="language-plaintext highlighter-rouge">Turing.Inference.MH</code></strong> — <em>Type</em>.</h3>
 
-<div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">MH</span><span class="x">(</span><span class="n">n_iters</span><span class="o">::</span><span class="kt">Int</span><span class="x">)</span>
+<div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">MH</span><span class="x">()</span>
 </code></pre></div></div>
 
 <p>Metropolis-Hastings sampler.</p>
 
 <p>Usage:</p>
 
-<div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">MH</span><span class="x">(</span><span class="mi">100</span><span class="x">,</span> <span class="x">(</span><span class="o">:</span><span class="n">m</span><span class="x">,</span> <span class="x">(</span><span class="n">x</span><span class="x">)</span> <span class="o">-&gt;</span> <span class="n">Normal</span><span class="x">(</span><span class="n">x</span><span class="x">,</span> <span class="mf">0.1</span><span class="x">)))</span>
+<div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">MH</span><span class="x">(</span><span class="o">:</span><span class="n">m</span><span class="x">)</span>
+<span class="n">MH</span><span class="x">((</span><span class="o">:</span><span class="n">m</span><span class="x">,</span> <span class="n">x</span> <span class="o">-&gt;</span> <span class="n">Normal</span><span class="x">(</span><span class="n">x</span><span class="x">,</span> <span class="mf">0.1</span><span class="x">)))</span>
 </code></pre></div></div>
 
 <p>Example:</p>
 
 <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Define a simple Normal model with unknown mean and variance.</span>
 <span class="nd">@model</span> <span class="n">gdemo</span><span class="x">(</span><span class="n">x</span><span class="x">)</span> <span class="o">=</span> <span class="k">begin</span>
-  <span class="n">s</span> <span class="o">~</span> <span class="n">InverseGamma</span><span class="x">(</span><span class="mi">2</span><span class="x">,</span><span class="mi">3</span><span class="x">)</span>
-  <span class="n">m</span> <span class="o">~</span> <span class="n">Normal</span><span class="x">(</span><span class="mi">0</span><span class="x">,</span><span class="n">sqrt</span><span class="x">(</span><span class="n">s</span><span class="x">))</span>
+  <span class="n">s</span> <span class="o">~</span> <span class="n">InverseGamma</span><span class="x">(</span><span class="mi">2</span><span class="x">,</span> <span class="mi">3</span><span class="x">)</span>
+  <span class="n">m</span> <span class="o">~</span> <span class="n">Normal</span><span class="x">(</span><span class="mi">0</span><span class="x">,</span> <span class="n">sqrt</span><span class="x">(</span><span class="n">s</span><span class="x">))</span>
   <span class="n">x</span><span class="x">[</span><span class="mi">1</span><span class="x">]</span> <span class="o">~</span> <span class="n">Normal</span><span class="x">(</span><span class="n">m</span><span class="x">,</span> <span class="n">sqrt</span><span class="x">(</span><span class="n">s</span><span class="x">))</span>
   <span class="n">x</span><span class="x">[</span><span class="mi">2</span><span class="x">]</span> <span class="o">~</span> <span class="n">Normal</span><span class="x">(</span><span class="n">m</span><span class="x">,</span> <span class="n">sqrt</span><span class="x">(</span><span class="n">s</span><span class="x">))</span>
-  <span class="k">return</span> <span class="n">s</span><span class="x">,</span> <span class="n">m</span>
 <span class="k">end</span>
 
-<span class="n">chn</span> <span class="o">=</span> <span class="n">sample</span><span class="x">(</span><span class="n">gdemo</span><span class="x">([</span><span class="mf">1.5</span><span class="x">,</span> <span class="mi">2</span><span class="x">]),</span> <span class="n">MH</span><span class="x">(</span><span class="mi">1000</span><span class="x">))</span>
+<span class="n">chn</span> <span class="o">=</span> <span class="n">sample</span><span class="x">(</span><span class="n">gdemo</span><span class="x">([</span><span class="mf">1.5</span><span class="x">,</span> <span class="mi">2</span><span class="x">]),</span> <span class="n">MH</span><span class="x">(),</span> <span class="mi">1000</span><span class="x">)</span>
 </code></pre></div></div>
 
 <h3 id="-turinginferencenuts--type"><a id="Turing.Inference.NUTS" href="#Turing.Inference.NUTS">#</a> <strong><code class="language-plaintext highlighter-rouge">Turing.Inference.NUTS</code></strong> — <em>Type</em>.</h3>
@@ -933,17 +884,18 @@
 
 <p>Usage:</p>
 
-<div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">NUTS</span><span class="x">(</span><span class="mi">200</span><span class="x">,</span> <span class="mf">0.6</span><span class="n">j_max</span><span class="x">)</span>
+<div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">NUTS</span><span class="x">()</span>            <span class="c"># Use default NUTS configuration. </span>
+<span class="n">NUTS</span><span class="x">(</span><span class="mi">1000</span><span class="x">,</span> <span class="mf">0.65</span><span class="x">)</span>  <span class="c"># Use 1000 adaption steps, and target accept ratio 0.65.</span>
 </code></pre></div></div>
 
 <p>Arguments:</p>
 
 <ul>
-  <li><code class="language-plaintext highlighter-rouge">n_adapts::Int</code> : The number of samples to use with adapatation.</li>
-  <li><code class="language-plaintext highlighter-rouge">δ::Float64</code> : Target acceptance rate.</li>
+  <li><code class="language-plaintext highlighter-rouge">n_adapts::Int</code> : The number of samples to use with adaptation.</li>
+  <li><code class="language-plaintext highlighter-rouge">δ::Float64</code> : Target acceptance rate for dual averaging.</li>
   <li><code class="language-plaintext highlighter-rouge">max_depth::Float64</code> : Maximum doubling tree depth.</li>
   <li><code class="language-plaintext highlighter-rouge">Δ_max::Float64</code> : Maximum divergence during doubling tree.</li>
-  <li><code class="language-plaintext highlighter-rouge">ϵ::Float64</code> : Inital step size; 0 means automatically search by Turing.</li>
+  <li><code class="language-plaintext highlighter-rouge">ϵ::Float64</code> : Inital step size; 0 means automatically searching using a heuristic procedure.</li>
 </ul>
 
 <h3 id="-turinginferencepg--type"><a id="Turing.Inference.PG" href="#Turing.Inference.PG">#</a> <strong><code class="language-plaintext highlighter-rouge">Turing.Inference.PG</code></strong> — <em>Type</em>.</h3>
@@ -969,16 +921,7 @@
 
 <p>Note that this method is particle-based, and arrays of variables must be stored in a <a href="/dev/docs/library/#Libtask.TArray"><code class="language-plaintext highlighter-rouge">TArray</code></a> object.</p>
 
-<p>Fields:</p>
-
-<ul>
-  <li><code class="language-plaintext highlighter-rouge">resampler</code>: A function used to sample particles from the particle container.  Defaults to <code class="language-plaintext highlighter-rouge">resample_systematic</code>.</li>
-  <li>
-    <p><code class="language-plaintext highlighter-rouge">resampler_threshold</code>: The threshold at which resampling terminates – defaults to 0.5. If  the <code class="language-plaintext highlighter-rouge">ess</code> &lt;= <code class="language-plaintext highlighter-rouge">resampler_threshold</code> * <code class="language-plaintext highlighter-rouge">n_particles</code>, the resampling step is completed.</p>
-
-    <p>Usage:</p>
-  </li>
-</ul>
+<p>Usage:</p>
 
 <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">SMC</span><span class="x">()</span>
 </code></pre></div></div>
