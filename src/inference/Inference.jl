@@ -584,7 +584,11 @@ function assume(
     #       r is genereated from some uniform distribution which is different from the prior
     # acclogp!(vi, logpdf_with_trans(dist, r, istrans(vi, vn)))
 
-    return r, logpdf_with_trans(dist, r, istrans(vi, vn))
+    if istrans(vi, vn)
+        return r, logpdf_with_trans(dist, invlink(dist, r), true)
+    else
+        return r, logpdf_with_trans(dist, r, false)
+    end
 end
 
 function observe(
@@ -698,7 +702,11 @@ function dot_assume(
 )
     @assert length(dist) == size(var, 1)
     r = get_and_set_val!(vi, vns, dist, spl)
-    lp = sum(logpdf_with_trans(dist, r, istrans(vi, vns[1])))
+    if istrans(vi, vns[1])
+        lp = sum(logpdf_with_trans(dist, invlink(dist, r), true))
+    else
+        lp = sum(logpdf_with_trans(dist, r, false))
+    end
     var .= r
     return var, lp
 end
@@ -711,7 +719,11 @@ function dot_assume(
 )
     r = get_and_set_val!(vi, vns, dists, spl)
     # Make sure `r` is not a matrix for multivariate distributions
-    lp = sum(logpdf_with_trans.(dists, r, istrans(vi, vns[1])))
+    if istrans(vi, vns[1])
+        lp = sum(logpdf_with_trans.(dists, invlink.(dists, r), true))
+    else
+        lp = sum(logpdf_with_trans.(dists, r, false))
+    end
     var .= r
     return var, lp
 end

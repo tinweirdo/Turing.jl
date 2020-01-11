@@ -162,9 +162,139 @@ function Distributions.logpdf(d::NoDist{<:Multivariate}, x::AbstractMatrix{<:Rea
     return zeros(Int, size(x, 2))
 end
 Distributions.logpdf(d::NoDist{<:Matrixvariate}, ::AbstractMatrix{<:Real}) = 0
-Bijectors.logpdf_with_trans(d::NoDist{<:Univariate}, ::Real) = 0
-Bijectors.logpdf_with_trans(d::NoDist{<:Multivariate}, ::AbstractVector{<:Real}) = 0
-function Bijectors.logpdf_with_trans(d::NoDist{<:Multivariate}, x::AbstractMatrix{<:Real})
+Bijectors.logpdf_with_trans(d::NoDist{<:Univariate}, ::Real, ::Bool) = 0
+Bijectors.logpdf_with_trans(d::NoDist{<:Multivariate}, ::AbstractVector{<:Real}, ::Bool) = 0
+function Bijectors.logpdf_with_trans(
+    d::NoDist{<:Multivariate},
+    x::AbstractMatrix{<:Real},
+    ::Bool,
+)
     return zeros(Int, size(x, 2))
 end
-Bijectors.logpdf_with_trans(d::NoDist{<:Matrixvariate}, ::AbstractMatrix{<:Real}) = 0
+function Bijectors.logpdf_with_trans(
+    d::NoDist{<:Matrixvariate},
+    ::AbstractMatrix{<:Real},
+    ::Bool,
+)
+    return 0
+end
+
+function Bijectors.logpdf_with_trans(
+    dist::DistributionsAD.MultipleContinuousUnivariate,
+    x::AbstractVector{<:Real},
+    istrans::Bool,
+)
+    return sum(logpdf_with_trans(dist.dist, x, istrans))
+end
+function Bijectors.link(
+    dist::DistributionsAD.MultipleContinuousUnivariate,
+    x::AbstractVector{<:Real},
+)
+    return link(dist.dist, x)
+end
+function Bijectors.invlink(
+    dist::DistributionsAD.MultipleContinuousUnivariate,
+    x::AbstractVector{<:Real},
+)
+    return invlink(dist.dist, x)
+end
+
+function Bijectors.logpdf_with_trans(
+    dist::DistributionsAD.MatrixContinuousUnivariate,
+    x::AbstractMatrix{<:Real},
+    istrans::Bool,
+)
+    return sum(logpdf_with_trans.(dist.dist, x, istrans))
+end
+function Bijectors.link(
+    dist::DistributionsAD.MatrixContinuousUnivariate,
+    x::AbstractMatrix{<:Real},
+)
+    return link(dist.dist, x)
+end
+function Bijectors.invlink(
+    dist::DistributionsAD.MatrixContinuousUnivariate,
+    x::AbstractMatrix{<:Real},
+)
+    return invlink(dist.dist, x)
+end
+
+function Bijectors.logpdf_with_trans(
+    dist::DistributionsAD.MultipleContinuousMultivariate,
+    x::AbstractMatrix{<:Real},
+    istrans::Bool,
+)
+    return sum(logpdf_with_trans(dist.dist, x, istrans))
+end
+function Bijectors.link(
+    dist::DistributionsAD.MultipleContinuousMultivariate,
+    x::AbstractMatrix{<:Real},
+)
+    return link(dist.dist, x)
+end
+function Bijectors.invlink(
+    dist::DistributionsAD.MultipleContinuousMultivariate,
+    x::AbstractMatrix{<:Real},
+)
+    return invlink(dist.dist, x)
+end
+
+function Bijectors.logpdf_with_trans(
+    dist::DistributionsAD.ProductVectorContinuousMultivariate,
+    x::AbstractMatrix{<:Real},
+    istrans::Bool,
+)
+    return sum(logpdf_with_trans.(dist.dists, [x[:,i] for i in 1:size(x, 2)], istrans))
+end
+function Bijectors.link(
+    dist::DistributionsAD.ProductVectorContinuousMultivariate,
+    x::AbstractMatrix{<:Real},
+)
+    return reduce(hcat, link.(dist.dists, [x[:,i] for i in 1:size(x, 2)]))
+end
+function Bijectors.invlink(
+    dist::DistributionsAD.ProductVectorContinuousMultivariate,
+    x::AbstractMatrix{<:Real},
+)
+    return reduce(hcat, invlink.(dist.dists, [x[:,i] for i in 1:size(x, 2)]))
+end
+
+function Bijectors.logpdf_with_trans(
+    dist::DistributionsAD.ProductVectorContinuousUnivariate,
+    x::AbstractVector{<:Real},
+    istrans::Bool,
+)
+    return sum(logpdf_with_trans.(dist.dists, x, istrans))
+end
+function Bijectors.link(
+    dist::DistributionsAD.ProductVectorContinuousUnivariate,
+    x::AbstractVector{<:Real},
+)
+    return link.(dist.dists, x)
+end
+function Bijectors.invlink(
+    dist::DistributionsAD.ProductVectorContinuousUnivariate,
+    x::AbstractVector{<:Real},
+)
+    return invlink.(dist.dists, x)
+end
+
+function Bijectors.logpdf_with_trans(
+    dist::DistributionsAD.ProductMatrixContinuousUnivariate,
+    x::AbstractMatrix{<:Real},
+    istrans::Bool,
+)
+    return sum(logpdf_with_trans.(dist.dists, x, istrans))
+end
+function Bijectors.link(
+    dist::DistributionsAD.ProductMatrixContinuousUnivariate,
+    x::AbstractMatrix{<:Real},
+)
+    return link.(dist.dists, x)
+end
+function Bijectors.invlink(
+    dist::DistributionsAD.ProductMatrixContinuousUnivariate,
+    x::AbstractMatrix{<:Real},
+)
+    return invlink.(dist.dists, x)
+end

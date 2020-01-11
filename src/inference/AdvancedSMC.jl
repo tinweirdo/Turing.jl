@@ -284,7 +284,11 @@ function assume(spl::Sampler{<:Union{PG,SMC}}, dist::Distribution, vn::VarName, 
             r = rand(dist)
             push!(vi, vn, r, dist, Selector(:invalid))
         end
-        acclogp!(vi, logpdf_with_trans(dist, r, istrans(vi, vn)))
+        if istrans(vi, vn)
+            acclogp!(vi, logpdf_with_trans(dist, invlink(dist, r), true))
+        else
+            acclogp!(vi, logpdf_with_trans(dist, r, false))
+        end
     end
     return r, 0
 end
