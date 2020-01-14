@@ -1,5 +1,6 @@
 module Core
 
+using Zygote, Bijectors
 using MacroTools, Libtask, ForwardDiff, Random
 using Distributions, LinearAlgebra
 using ..Utilities, Reexport

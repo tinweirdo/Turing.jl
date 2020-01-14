@@ -13,6 +13,7 @@ using ..Turing: PROGRESS, NamedDist, NoDist, Turing
 using StatsFuns: logsumexp
 using Random: GLOBAL_RNG, AbstractRNG, randexp
 using AbstractMCMC, DynamicPPL
+using Bijectors: _debug
 
 import MCMCChains: Chains
 import AdvancedHMC; const AHMC = AdvancedHMC
@@ -572,9 +573,9 @@ function assume(
             unset_flag!(vi, vn, "del")
             r = spl isa SampleFromUniform ? init(dist) : rand(dist)
             vi[vn] = vectorize(dist, r)
-            setorder!(vi, vn, vi.num_produce)
+            setorder!(vi, vn, vi.num_produce[])
         else
-        r = vi[vn]
+            r = vi[vn]
         end
     else
         r = isa(spl, SampleFromUniform) ? init(dist) : rand(dist)
@@ -593,7 +594,7 @@ function observe(
     value,
     vi::VarInfo,
 )
-    vi.num_produce += one(vi.num_produce)
+    vi.num_produce[] += one(vi.num_produce[])
     return logpdf(dist, value)
 end
 
@@ -739,7 +740,7 @@ function get_and_set_val!(
             for i in 1:n
                 vn = vns[i]
                 vi[vn] = vectorize(dist, r[:, i])
-                setorder!(vi, vn, vi.num_produce)
+                setorder!(vi, vn, vi.num_produce[])
             end
         else
         r = vi[vns]
@@ -767,7 +768,7 @@ function get_and_set_val!(
                 vn = vns[i]
                 dist = dists isa AbstractArray ? dists[i] : dists
                 vi[vn] = vectorize(dist, r[i])
-                setorder!(vi, vn, vi.num_produce)
+                setorder!(vi, vn, vi.num_produce[])
             end
         else
         r = reshape(vi[vec(vns)], size(vns))
@@ -839,9 +840,9 @@ function dot_observe(
     value::AbstractMatrix,
     vi::VarInfo,
 )
-    vi.num_produce += one(vi.num_produce)
-    Turing.DEBUG && @debug "dist = $dist"
-    Turing.DEBUG && @debug "value = $value"
+    vi.num_produce[] += one(vi.num_produce[])
+    Turing.DEBUG && _debug("dist = $dist")
+    Turing.DEBUG && _debug("value = $value")
     return sum(logpdf(dist, value))
 end
 function dot_observe(
@@ -850,9 +851,9 @@ function dot_observe(
     value::AbstractArray,
     vi::VarInfo,
 )
-    vi.num_produce += one(vi.num_produce)
-    Turing.DEBUG && @debug "dists = $dists"
-    Turing.DEBUG && @debug "value = $value"
+    vi.num_produce[] += one(vi.num_produce[])
+    Turing.DEBUG && _debug("dists = $dists")
+    Turing.DEBUG && _debug("value = $value")
     return sum(logpdf.(dists, value))
 end
 function dot_observe(

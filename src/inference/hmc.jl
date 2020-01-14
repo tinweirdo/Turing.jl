@@ -351,7 +351,7 @@ function step!(
     end
 
     # Get position and log density before transition
-    θ_old, log_density_old = spl.state.vi[spl], spl.state.vi.logp
+    θ_old, log_density_old = spl.state.vi[spl], spl.state.vi.logp[]
 
     # Transition
     t = AHMC.step(rng, spl.state.h, spl.state.traj, spl.state.z)
@@ -410,10 +410,10 @@ Generate a function that takes `θ` and returns logpdf at `θ` for the model spe
 """
 function gen_logπ(vi::VarInfo, spl::Sampler, model)
     function logπ(x)::Float64
-        x_old, lj_old = vi[spl], vi.logp
+        x_old, lj_old = vi[spl], vi.logp[]
         vi[spl] = x
         runmodel!(model, vi, spl)
-        lj = vi.logp
+        lj = vi.logp[]
         vi[spl] = x_old
         setlogp!(vi, lj_old)
         return lj
@@ -438,14 +438,14 @@ function assume(
     vn::VarName,
     vi::VarInfo
 )
-    Turing.DEBUG && @debug "assuming..."
+    Turing.DEBUG && _debug("assuming...")
     updategid!(vi, vn, spl)
     r = vi[vn]
     # acclogp!(vi, logpdf_with_trans(dist, r, istrans(vi, vn)))
     # r
-    Turing.DEBUG && @debug "dist = $dist"
-    Turing.DEBUG && @debug "vn = $vn"
-    Turing.DEBUG && @debug "r = $r" "typeof(r)=$(typeof(r))"
+    Turing.DEBUG && _debug("dist = $dist")
+    Turing.DEBUG && _debug("vn = $vn")
+    Turing.DEBUG && _debug("r = $r, typeof(r)=$(typeof(r))")
     return r, logpdf_with_trans(dist, r, istrans(vi, vn))
 end
 

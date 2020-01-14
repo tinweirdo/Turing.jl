@@ -4,7 +4,8 @@
 
 const ADBACKEND = Ref(:forward_diff)
 function setadbackend(backend_sym)
-    @assert backend_sym == :forward_diff || backend_sym == :reverse_diff
+    @assert backend_sym == :forward_diff || backend_sym == :reverse_diff || 
+        backend_sym == :zygote
     backend_sym == :forward_diff && CHUNKSIZE[] == 0 && setchunksize(40)
     ADBACKEND[] = backend_sym
 end
@@ -31,12 +32,14 @@ getchunksize(::Type{<:Sampler{Talg}}) where Talg = getchunksize(Talg)
 getchunksize(::Type{SampleFromPrior}) = CHUNKSIZE[]
 
 struct TrackerAD <: ADBackend end
+struct ZygoteAD <: ADBackend end
 
 ADBackend() = ADBackend(ADBACKEND[])
 ADBackend(T::Symbol) = ADBackend(Val(T))
 
 ADBackend(::Val{:forward_diff}) = ForwardDiffAD{CHUNKSIZE[]}
-ADBackend(::Val) = TrackerAD
+ADBackend(::Val{:reverse_diff}) = TrackerAD
+ADBackend(::Val) = ZygoteAD
 
 """
 getADtype(alg)
@@ -66,8 +69,10 @@ function gradient_logp(
     ad_type = getADtype(sampler)
     if ad_type <: ForwardDiffAD
         return gradient_logp_forward(θ, vi, model, sampler)
-    else ad_type <: TrackerAD
-        return gradient_logp_reverse(θ, vi, model, sampler)
+    elseif ad_type <: TrackerAD
+        return gradient_logp_reverse(θ, vi, model, sampler, TrackerAD())
+    else
+        return gradient_logp_reverse(θ, vi, model, sampler, ZygoteAD())
     end
 end
 
@@ -89,11 +94,11 @@ function gradient_logp_forward(
     sampler::AbstractSampler=SampleFromPrior(),
 )
     # Define function to compute log joint.
-    logp_old = vi.logp
+    logp_old = vi.logp[]
     function f(θ)
         new_vi = VarInfo(vi, sampler, θ)
-        logp = runmodel!(model, new_vi, sampler).logp
-        vi.logp = ForwardDiff.value(logp)
+        logp = runmodel!(model, new_vi, sampler).logp[]
+        vi.logp[] = ForwardDiff.value(logp)
         return logp
     end
 
@@ -102,8 +107,8 @@ function gradient_logp_forward(
     chunk = ForwardDiff.Chunk(min(length(θ), chunk_size))
     config = ForwardDiff.GradientConfig(f, θ, chunk)
     ∂l∂θ = ForwardDiff.gradient!(similar(θ), f, θ, config)
-    l = vi.logp
-    vi.logp = logp_old
+    l = vi.logp[]
+    vi.logp[] = logp_old
 
     return l, ∂l∂θ
 end
@@ -114,29 +119,37 @@ gradient_logp_reverse(
     vi::VarInfo,
     model::Model,
     sampler::AbstractSampler=SampleFromPrior(),
+    backend::ADBackend,
 )
 
 Computes the value of the log joint of `θ` and its gradient for the model
-specified by `(vi, sampler, model)` using reverse-mode AD from Tracker.jl.
+specified by `(vi, sampler, model)` using reverse-mode AD from the specified `backend`, e.g. `TrackerAD()` which uses `Tracker.jl` or `ZygoteAD()` which uses `Zygote.jl`.
 """
 function gradient_logp_reverse(
     θ::AbstractVector{<:Real},
     vi::VarInfo,
     model::Model,
     sampler::AbstractSampler=SampleFromPrior(),
+    backend::ADBackend = TrackerAD(),
 )
-    T = typeof(vi.logp)
+    T = typeof(vi.logp[])
 
     # Specify objective function.
     function f(θ)
         new_vi = VarInfo(vi, sampler, θ)
-        return runmodel!(model, new_vi, sampler).logp
+        return runmodel!(model, new_vi, sampler).logp[]
     end
 
-    # Compute forward and reverse passes.
-    l_tracked, ȳ = Tracker.forward(f, θ)
-    l::T, ∂l∂θ::typeof(θ) = Tracker.data(l_tracked), Tracker.data(ȳ(1)[1])
-    # Remove tracking info from variables in model (because mutable state).
+    if backend isa TrackerAD
+        # Compute forward and reverse passes.
+        l_tracked, ȳ = Tracker.forward(f, θ)
+        # Remove tracking info from variables in model (because mutable state).
+        l::T, ∂l∂θ::typeof(θ) = Tracker.data(l_tracked), Tracker.data(ȳ(1)[1])
+    else
+        # Compute forward and reverse passes.
+        l, ȳ = Zygote.pullback(f, θ)
+        ∂l∂θ = ȳ(1)[1]
+    end
     return l, ∂l∂θ
 end
 
@@ -189,3 +202,7 @@ for F in (:link, :invlink)
         end
     end
 end
+
+## Zygote support ##
+
+Zygote.@nograd Bijectors._debug
