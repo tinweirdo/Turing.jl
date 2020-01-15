@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="//v0.8.2/feed.xml" rel="self" type="application/atom+xml" /><link href="//v0.8.2/" rel="alternate" type="text/html" /><updated>2020-01-15T11:10:31+00:00</updated><id>//v0.8.2/feed.xml</id><title type="html">Turing.jl</title><subtitle>Turing: A robust, efficient and modular library for general-purpose probabilistic programming.
+</subtitle><author><name>The Turing Team</name></author><entry><title type="html">Turing’s Blog</title><link href="//v0.8.2/posts/2019-12-14-initial-post" rel="alternate" type="text/html" title="Turing's Blog" /><published>2019-12-14T00:00:00+00:00</published><updated>2019-12-14T00:00:00+00:00</updated><id>//v0.8.2/posts/initial-post</id><content type="html" xml:base="//v0.8.2/posts/2019-12-14-initial-post">&lt;p&gt;All good open source projects should have a blog, and Turing is one such project. Later on, members of the Turing team may be populating this feed with posts on topics like&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Interesting things you can do with Turing, or interesting things we have seen others do.&lt;/li&gt;
+  &lt;li&gt;Development updates and major release announcements.&lt;/li&gt;
+  &lt;li&gt;Research updates.&lt;/li&gt;
+  &lt;li&gt;Explorations of Turing’s internals.&lt;/li&gt;
+  &lt;li&gt;Updates to Turing’s sattelite projects &lt;a href=&quot;https://github.com/TuringLang/AdvancedHMC.jl&quot;&gt;AdvancedHMC.jl&lt;/a&gt; or &lt;a href=&quot;https://github.com/TuringLang/Bijectors.jl&quot;&gt;Bijectors.jl&lt;/a&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Stay tuned!&lt;/p&gt;</content><author><name>Cameron Pfiffer</name></author><summary type="html">All good open source projects should have a blog, and Turing is one such project. Later on, members of the Turing team may be populating this feed with posts on topics like</summary></entry></feed>
