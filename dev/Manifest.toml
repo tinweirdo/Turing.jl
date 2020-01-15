@@ -130,9 +130,9 @@ version = "0.20.0"
 
 [[DataStructures]]
 deps = ["InteractiveUtils", "OrderedCollections"]
-git-tree-sha1 = "f784254f428fb8fd7ac15982e5862a38a44523d3"
+git-tree-sha1 = "ef162bfe3d872c326c0ecddeb45e3c13c1b74eda"
 uuid = "864edb3b-99cc-5e75-8d2d-829cb0a9cfe8"
-version = "0.17.7"
+version = "0.17.8"
 
 [[DataValueInterfaces]]
 git-tree-sha1 = "bfc1187b79289637fa0ef6d4436ebdfe6905cbd6"
@@ -609,9 +609,9 @@ version = "0.3.9"
 
 [[Turing]]
 deps = ["AbstractMCMC", "AdvancedHMC", "Bijectors", "BinaryProvider", "Distributions", "DistributionsAD", "DynamicPPL", "ForwardDiff", "Libtask", "LinearAlgebra", "LogDensityProblems", "MCMCChains", "MacroTools", "Markdown", "PDMats", "ProgressMeter", "Random", "Reexport", "Requires", "SpecialFunctions", "Statistics", "StatsFuns", "Tracker"]
-git-tree-sha1 = "191cd9a34f3fd8c34b1745bdd4605ce46bc3c506"
+git-tree-sha1 = "61f457956d7a9cde8440f3c0e943b6c5c5d8a694"
 uuid = "fce5fe82-541a-59a6-adf8-730c64b5f9a0"
-version = "0.8.1"
+version = "0.8.2"
 
 [[UUIDs]]
 deps = ["Random", "SHA"]
