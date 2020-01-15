@@ -351,7 +351,7 @@ function step!(
     end
 
     # Get position and log density before transition
-    θ_old, log_density_old = spl.state.vi[spl], spl.state.vi.logp[]
+    θ_old, log_density_old = spl.state.vi[spl], getlogp(spl.state.vi)
 
     # Transition
     t = AHMC.step(rng, spl.state.h, spl.state.traj, spl.state.z)
@@ -410,10 +410,10 @@ Generate a function that takes `θ` and returns logpdf at `θ` for the model spe
 """
 function gen_logπ(vi::VarInfo, spl::Sampler, model)
     function logπ(x)::Float64
-        x_old, lj_old = vi[spl], vi.logp[]
+        x_old, lj_old = vi[spl], getlogp(vi)
         vi[spl] = x
         runmodel!(model, vi, spl)
-        lj = vi.logp[]
+        lj = getlogp(vi)
         vi[spl] = x_old
         setlogp!(vi, lj_old)
         return lj

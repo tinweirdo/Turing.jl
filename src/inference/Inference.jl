@@ -573,7 +573,7 @@ function assume(
             unset_flag!(vi, vn, "del")
             r = spl isa SampleFromUniform ? init(dist) : rand(dist)
             vi[vn] = vectorize(dist, r)
-            setorder!(vi, vn, vi.num_produce[])
+            setorder!(vi, vn, get_num_produce(vi))
         else
             r = vi[vn]
         end
@@ -594,7 +594,7 @@ function observe(
     value,
     vi::VarInfo,
 )
-    vi.num_produce[] += one(vi.num_produce[])
+    increment_num_produce!(vi)
     return logpdf(dist, value)
 end
 
@@ -740,7 +740,7 @@ function get_and_set_val!(
             for i in 1:n
                 vn = vns[i]
                 vi[vn] = vectorize(dist, r[:, i])
-                setorder!(vi, vn, vi.num_produce[])
+                setorder!(vi, vn, get_num_produce(vi))
             end
         else
         r = vi[vns]
@@ -768,7 +768,7 @@ function get_and_set_val!(
                 vn = vns[i]
                 dist = dists isa AbstractArray ? dists[i] : dists
                 vi[vn] = vectorize(dist, r[i])
-                setorder!(vi, vn, vi.num_produce[])
+                setorder!(vi, vn, get_num_produce(vi))
             end
         else
         r = reshape(vi[vec(vns)], size(vns))
@@ -840,7 +840,7 @@ function dot_observe(
     value::AbstractMatrix,
     vi::VarInfo,
 )
-    vi.num_produce[] += one(vi.num_produce[])
+    increment_num_produce!(vi)
     Turing.DEBUG && _debug("dist = $dist")
     Turing.DEBUG && _debug("value = $value")
     return sum(logpdf(dist, value))
@@ -851,7 +851,7 @@ function dot_observe(
     value::AbstractArray,
     vi::VarInfo,
 )
-    vi.num_produce[] += one(vi.num_produce[])
+    increment_num_produce!(vi)
     Turing.DEBUG && _debug("dists = $dists")
     Turing.DEBUG && _debug("value = $value")
     return sum(logpdf.(dists, value))

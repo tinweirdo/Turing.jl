@@ -60,7 +60,7 @@ include(dir*"/test/test_utils/AllUtils.jl")
         model = testmodel([1.0])
         varinfo = Turing.VarInfo(model)
         model(varinfo, Turing.SampleFromPrior(), Turing.LikelihoodContext())
-        @test varinfo.logp == loglike
+        @test DynamicPPL.getlogp(varinfo) == loglike
 
         # Test MiniBatchContext
         @model testmodel(x) = begin
@@ -72,6 +72,6 @@ include(dir*"/test/test_utils/AllUtils.jl")
         varinfo2 = deepcopy(varinfo1)
         model(varinfo1, Turing.SampleFromPrior(), Turing.LikelihoodContext())
         model(varinfo2, Turing.SampleFromPrior(), Turing.MiniBatchContext(Turing.LikelihoodContext(), 10))
-        @test isapprox(varinfo2.logp / varinfo1.logp, 10)
+        @test isapprox(DynamicPPL.getlogp(varinfo2) / DynamicPPL.getlogp(varinfo1), 10)
     end
 end
