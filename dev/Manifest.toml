@@ -20,9 +20,9 @@ version = "1.0.0"
 
 [[AdvancedHMC]]
 deps = ["ArgCheck", "InplaceOps", "LazyArrays", "LinearAlgebra", "Parameters", "ProgressMeter", "Random", "Requires", "Statistics", "StatsBase", "StatsFuns"]
-git-tree-sha1 = "14365b541e5e739337534767a033a727d91d25a9"
+git-tree-sha1 = "0340a7d9d07df5397459bf7747b9f4bb3897d2ae"
 uuid = "0bf59076-c3b1-5ca4-86bd-e02cd72cde3d"
-version = "0.2.19"
+version = "0.2.20"
 
 [[ArgCheck]]
 deps = ["Random"]
@@ -77,9 +77,9 @@ version = "0.4.3"
 
 [[Bijectors]]
 deps = ["Distributions", "LinearAlgebra", "MappedArrays", "Random", "Reexport", "Requires", "Roots", "StatsFuns"]
-git-tree-sha1 = "033bb39796a5c36e0bcc57471232461b4dc49def"
+git-tree-sha1 = "08faa25195f25e748769b00332214c7e6c63c521"
 uuid = "76274a88-744f-5084-9051-94815aaf08c4"
-version = "0.5.1"
+version = "0.5.2"
 
 [[BinaryProvider]]
 deps = ["Libdl", "SHA"]

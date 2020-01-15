@@ -676,18 +676,18 @@
   <li><a href="/dev/docs/library/advancedhmc/#AdvancedHMC.AbstractTrajectory"><code class="language-plaintext highlighter-rouge">AdvancedHMC.AbstractTrajectory</code></a></li>
   <li><a href="/dev/docs/library/advancedhmc/#AdvancedHMC.AbstractTrajectorySampler"><code class="language-plaintext highlighter-rouge">AdvancedHMC.AbstractTrajectorySampler</code></a></li>
   <li><a href="/dev/docs/library/advancedhmc/#AdvancedHMC.BinaryTree"><code class="language-plaintext highlighter-rouge">AdvancedHMC.BinaryTree</code></a></li>
-  <li><a href="/dev/docs/library/advancedhmc/#AdvancedHMC.MultinomialTS-Tuple{MultinomialTS,AbstractFloat,AdvancedHMC.PhasePoint}"><code class="language-plaintext highlighter-rouge">AdvancedHMC.MultinomialTS</code></a></li>
   <li><a href="/dev/docs/library/advancedhmc/#AdvancedHMC.MultinomialTS-Tuple{Random.AbstractRNG,AdvancedHMC.PhasePoint}"><code class="language-plaintext highlighter-rouge">AdvancedHMC.MultinomialTS</code></a></li>
   <li><a href="/dev/docs/library/advancedhmc/#AdvancedHMC.MultinomialTS"><code class="language-plaintext highlighter-rouge">AdvancedHMC.MultinomialTS</code></a></li>
+  <li><a href="/dev/docs/library/advancedhmc/#AdvancedHMC.MultinomialTS-Tuple{MultinomialTS,AbstractFloat,AdvancedHMC.PhasePoint}"><code class="language-plaintext highlighter-rouge">AdvancedHMC.MultinomialTS</code></a></li>
   <li><a href="/dev/docs/library/advancedhmc/#AdvancedHMC.NUTS"><code class="language-plaintext highlighter-rouge">AdvancedHMC.NUTS</code></a></li>
   <li><a href="/dev/docs/library/advancedhmc/#AdvancedHMC.NUTS-Union{Tuple{I}, Tuple{C}, Tuple{S}, Tuple{F}, Tuple{I}, Tuple{I,Int64}, Tuple{I,Int64,F}} where C&lt;:AdvancedHMC.AbstractTerminationCriterion where S&lt;:AdvancedHMC.AbstractTrajectorySampler where F&lt;:AbstractFloat where I&lt;:AdvancedHMC.AbstractIntegrator"><code class="language-plaintext highlighter-rouge">AdvancedHMC.NUTS</code></a></li>
   <li><a href="/dev/docs/library/advancedhmc/#AdvancedHMC.NUTS-Tuple"><code class="language-plaintext highlighter-rouge">AdvancedHMC.NUTS</code></a></li>
+  <li><a href="/dev/docs/library/advancedhmc/#AdvancedHMC.SliceTS"><code class="language-plaintext highlighter-rouge">AdvancedHMC.SliceTS</code></a></li>
   <li><a href="/dev/docs/library/advancedhmc/#AdvancedHMC.SliceTS-Tuple{Random.AbstractRNG,AdvancedHMC.PhasePoint}"><code class="language-plaintext highlighter-rouge">AdvancedHMC.SliceTS</code></a></li>
   <li><a href="/dev/docs/library/advancedhmc/#AdvancedHMC.SliceTS-Tuple{SliceTS,AbstractFloat,AdvancedHMC.PhasePoint}"><code class="language-plaintext highlighter-rouge">AdvancedHMC.SliceTS</code></a></li>
-  <li><a href="/dev/docs/library/advancedhmc/#AdvancedHMC.SliceTS"><code class="language-plaintext highlighter-rouge">AdvancedHMC.SliceTS</code></a></li>
+  <li><a href="/dev/docs/library/advancedhmc/#AdvancedHMC.Termination"><code class="language-plaintext highlighter-rouge">AdvancedHMC.Termination</code></a></li>
   <li><a href="/dev/docs/library/advancedhmc/#AdvancedHMC.Termination-Union{Tuple{F}, Tuple{MultinomialTS,AdvancedHMC.NUTS,F,F}} where F&lt;:AbstractFloat"><code class="language-plaintext highlighter-rouge">AdvancedHMC.Termination</code></a></li>
   <li><a href="/dev/docs/library/advancedhmc/#AdvancedHMC.Termination-Union{Tuple{F}, Tuple{SliceTS,AdvancedHMC.NUTS,F,F}} where F&lt;:AbstractFloat"><code class="language-plaintext highlighter-rouge">AdvancedHMC.Termination</code></a></li>
-  <li><a href="/dev/docs/library/advancedhmc/#AdvancedHMC.Termination"><code class="language-plaintext highlighter-rouge">AdvancedHMC.Termination</code></a></li>
   <li><a href="/dev/docs/library/advancedhmc/#AdvancedHMC.Transition"><code class="language-plaintext highlighter-rouge">AdvancedHMC.Transition</code></a></li>
   <li><a href="/dev/docs/library/advancedhmc/#AdvancedHMC.A-Tuple{Any,Any,Any}"><code class="language-plaintext highlighter-rouge">AdvancedHMC.A</code></a></li>
   <li><a href="/dev/docs/library/advancedhmc/#AdvancedHMC.build_tree-Union{Tuple{C}, Tuple{S}, Tuple{F}, Tuple{I}, Tuple{Random.AbstractRNG,AdvancedHMC.NUTS{S,C,I,F},Hamiltonian,AdvancedHMC.PhasePoint,AdvancedHMC.AbstractTrajectorySampler,Int64,Int64,AbstractFloat}} where C&lt;:AdvancedHMC.AbstractTerminationCriterion where S&lt;:AdvancedHMC.AbstractTrajectorySampler where F&lt;:AbstractFloat where I&lt;:AdvancedHMC.AbstractIntegrator"><code class="language-plaintext highlighter-rouge">AdvancedHMC.build_tree</code></a></li>
@@ -698,8 +698,8 @@
   <li><a href="/dev/docs/library/advancedhmc/#AdvancedHMC.maxabs-Tuple{Any,Any}"><code class="language-plaintext highlighter-rouge">AdvancedHMC.maxabs</code></a></li>
   <li><a href="/dev/docs/library/advancedhmc/#AdvancedHMC.mh_accept_ratio-Union{Tuple{T}, Tuple{Random.AbstractRNG,T,T}} where T&lt;:AbstractFloat"><code class="language-plaintext highlighter-rouge">AdvancedHMC.mh_accept_ratio</code></a></li>
   <li><a href="/dev/docs/library/advancedhmc/#AdvancedHMC.nom_step_size-Tuple{AdvancedHMC.AbstractIntegrator}"><code class="language-plaintext highlighter-rouge">AdvancedHMC.nom_step_size</code></a></li>
-  <li><a href="/dev/docs/library/advancedhmc/#AdvancedHMC.pm_next!-Tuple{Any,NamedTuple,Int64,AdvancedHMC.Adaptation.AbstractMetric}"><code class="language-plaintext highlighter-rouge">AdvancedHMC.pm_next!</code></a></li>
-  <li><a href="/dev/docs/library/advancedhmc/#AdvancedHMC.simple_pm_next!-Tuple{Any,NamedTuple,Int64,AdvancedHMC.Adaptation.AbstractMetric}"><code class="language-plaintext highlighter-rouge">AdvancedHMC.simple_pm_next!</code></a></li>
+  <li><a href="/dev/docs/library/advancedhmc/#AdvancedHMC.pm_next!-Tuple{Any,NamedTuple}"><code class="language-plaintext highlighter-rouge">AdvancedHMC.pm_next!</code></a></li>
+  <li><a href="/dev/docs/library/advancedhmc/#AdvancedHMC.simple_pm_next!-Tuple{Any,NamedTuple}"><code class="language-plaintext highlighter-rouge">AdvancedHMC.simple_pm_next!</code></a></li>
   <li><a href="/dev/docs/library/advancedhmc/#AdvancedHMC.step_size"><code class="language-plaintext highlighter-rouge">AdvancedHMC.step_size</code></a></li>
   <li><a href="/dev/docs/library/advancedhmc/#AdvancedHMC.temper-Tuple{TemperedLeapfrog,Any,NamedTuple{(:i, :is_half),#s77} where #s77&lt;:Tuple{Integer,Bool},Int64}"><code class="language-plaintext highlighter-rouge">AdvancedHMC.temper</code></a></li>
   <li><a href="/dev/docs/library/advancedhmc/#AdvancedHMC.transition-Tuple{AdvancedHMC.AbstractTrajectory,Hamiltonian,AdvancedHMC.PhasePoint}"><code class="language-plaintext highlighter-rouge">AdvancedHMC.transition</code></a></li>
@@ -714,7 +714,7 @@
 
 <p>Find a good initial leap-frog step-size via heuristic search.</p>
 
-<p><a id="StatsBase.sample-Union{Tuple{T}, Tuple{Union{Random.AbstractRNG, AbstractArray{#s146,1} where #s146&lt;:Random.AbstractRNG},Hamiltonian,AdvancedHMC.AbstractProposal,T,Int64}, Tuple{Union{Random.AbstractRNG, AbstractArray{#s147,1} where #s147&lt;:Random.AbstractRNG},Hamiltonian,AdvancedHMC.AbstractProposal,T,Int64,AdvancedHMC.Adaptation.AbstractAdaptor}, Tuple{Union{Random.AbstractRNG, AbstractArray{#s148,1} where #s148&lt;:Random.AbstractRNG},Hamiltonian,AdvancedHMC.AbstractProposal,T,Int64,AdvancedHMC.Adaptation.AbstractAdaptor,Int64}} where T&lt;:(Union{AbstractArray{#s145,1}, AbstractArray{#s145,2}} where #s145&lt;:AbstractFloat)" href="#StatsBase.sample-Union{Tuple{T}, Tuple{Union{Random.AbstractRNG, AbstractArray{#s146,1} where #s146&lt;:Random.AbstractRNG},Hamiltonian,AdvancedHMC.AbstractProposal,T,Int64}, Tuple{Union{Random.AbstractRNG, AbstractArray{#s147,1} where #s147&lt;:Random.AbstractRNG},Hamiltonian,AdvancedHMC.AbstractProposal,T,Int64,AdvancedHMC.Adaptation.AbstractAdaptor}, Tuple{Union{Random.AbstractRNG, AbstractArray{#s148,1} where #s148&lt;:Random.AbstractRNG},Hamiltonian,AdvancedHMC.AbstractProposal,T,Int64,AdvancedHMC.Adaptation.AbstractAdaptor,Int64}} where T&lt;:(Union{AbstractArray{#s145,1}, AbstractArray{#s145,2}} where #s145&lt;:AbstractFloat)">#</a>
+<p><a id="StatsBase.sample-Union{Tuple{T}, Tuple{Union{Random.AbstractRNG, AbstractArray{#s145,1} where #s145&lt;:Random.AbstractRNG},Hamiltonian,AdvancedHMC.AbstractProposal,T,Int64}, Tuple{Union{Random.AbstractRNG, AbstractArray{#s146,1} where #s146&lt;:Random.AbstractRNG},Hamiltonian,AdvancedHMC.AbstractProposal,T,Int64,AdvancedHMC.Adaptation.AbstractAdaptor}, Tuple{Union{Random.AbstractRNG, AbstractArray{#s147,1} where #s147&lt;:Random.AbstractRNG},Hamiltonian,AdvancedHMC.AbstractProposal,T,Int64,AdvancedHMC.Adaptation.AbstractAdaptor,Int64}} where T&lt;:(Union{AbstractArray{#s144,1}, AbstractArray{#s144,2}} where #s144&lt;:AbstractFloat)" href="#StatsBase.sample-Union{Tuple{T}, Tuple{Union{Random.AbstractRNG, AbstractArray{#s145,1} where #s145&lt;:Random.AbstractRNG},Hamiltonian,AdvancedHMC.AbstractProposal,T,Int64}, Tuple{Union{Random.AbstractRNG, AbstractArray{#s146,1} where #s146&lt;:Random.AbstractRNG},Hamiltonian,AdvancedHMC.AbstractProposal,T,Int64,AdvancedHMC.Adaptation.AbstractAdaptor}, Tuple{Union{Random.AbstractRNG, AbstractArray{#s147,1} where #s147&lt;:Random.AbstractRNG},Hamiltonian,AdvancedHMC.AbstractProposal,T,Int64,AdvancedHMC.Adaptation.AbstractAdaptor,Int64}} where T&lt;:(Union{AbstractArray{#s144,1}, AbstractArray{#s144,2}} where #s144&lt;:AbstractFloat)">#</a>
 <strong><code class="language-plaintext highlighter-rouge">StatsBase.sample</code></strong> — <em>Method</em>.</p>
 
 <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">sample</span><span class="x">(</span>
@@ -815,12 +815,12 @@
 
 <p>Get the nominal integration step size. The current integration step size may differ from this, for example if the step size is jittered. Nominal step size is usually used in adaptation.</p>
 
-<p><a id="AdvancedHMC.pm_next!-Tuple{Any,NamedTuple,Int64,AdvancedHMC.Adaptation.AbstractMetric}" href="#AdvancedHMC.pm_next!-Tuple{Any,NamedTuple,Int64,AdvancedHMC.Adaptation.AbstractMetric}">#</a>
+<p><a id="AdvancedHMC.pm_next!-Tuple{Any,NamedTuple}" href="#AdvancedHMC.pm_next!-Tuple{Any,NamedTuple}">#</a>
 <strong><code class="language-plaintext highlighter-rouge">AdvancedHMC.pm_next!</code></strong> — <em>Method</em>.</p>
 
 <p>Progress meter update with all trajectory stats, iteration number and metric shown.</p>
 
-<p><a id="AdvancedHMC.simple_pm_next!-Tuple{Any,NamedTuple,Int64,AdvancedHMC.Adaptation.AbstractMetric}" href="#AdvancedHMC.simple_pm_next!-Tuple{Any,NamedTuple,Int64,AdvancedHMC.Adaptation.AbstractMetric}">#</a>
+<p><a id="AdvancedHMC.simple_pm_next!-Tuple{Any,NamedTuple}" href="#AdvancedHMC.simple_pm_next!-Tuple{Any,NamedTuple}">#</a>
 <strong><code class="language-plaintext highlighter-rouge">AdvancedHMC.simple_pm_next!</code></strong> — <em>Method</em>.</p>
 
 <p>Simple progress meter update without any show values.</p>
