@@ -207,7 +207,7 @@ function inner_function(vi::Turing.VarInfo, sampler::Turing.AbstractSampler, ctx
 
     ... # The code above is repeated for the other 2 variables, y and TV
 
-    # Reset `vi.logp[]`
+    # Reset the `logp` accumulator
     resetlogp!(vi)
 
     ... # Main model body
