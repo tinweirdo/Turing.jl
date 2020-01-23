@@ -1,6 +1,6 @@
 module Core
 
-using Bijectors
+using DistributionsAD, Bijectors
 using MacroTools, Libtask, ForwardDiff, Random
 using Distributions, LinearAlgebra
 using ..Utilities, Reexport
@@ -11,7 +11,6 @@ using DynamicPPL: Model, runmodel!,
 using LinearAlgebra: copytri!
 using Bijectors: PDMatDistribution
 import Bijectors: link, invlink
-using DistributionsAD
 using StatsFuns: logsumexp, softmax
 @reexport using DynamicPPL
 using Requires

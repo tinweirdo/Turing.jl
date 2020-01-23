@@ -9,7 +9,7 @@ module Turing
 ########################################################################
 
 using Requires, Reexport, ForwardDiff
-using Bijectors, StatsFuns, SpecialFunctions
+using DistributionsAD, Bijectors, StatsFuns, SpecialFunctions
 using Statistics, LinearAlgebra, ProgressMeter
 using Markdown, Libtask, MacroTools
 using AbstractMCMC
@@ -111,6 +111,8 @@ export  @model,                 # modelling
         VecBinomialLogit,
         OrderedLogistic,
         LogPoisson,
-        NamedDist
+        NamedDist,
+        Multi,
+        ArrayDist
 
 end

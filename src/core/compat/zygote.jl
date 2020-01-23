@@ -11,7 +11,8 @@ function gradient_logp_reverse(
     model::Model,
     sampler::AbstractSampler = SampleFromPrior(),
 )
-
+    T = typeof(getlogp(vi))
+    
     # Specify objective function.
     function f(θ)
         new_vi = VarInfo(vi, sampler, θ)
@@ -19,8 +20,8 @@ function gradient_logp_reverse(
     end
 
     # Compute forward and reverse passes.
-    l, ȳ = Zygote.pullback(f, θ)
-    ∂l∂θ = ȳ(1)[1]
+    l::T, ȳ = Zygote.pullback(f, θ)
+    ∂l∂θ::typeof(θ) = ȳ(1)[1]
 
     return l, ∂l∂θ
 end

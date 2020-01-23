@@ -184,7 +184,7 @@ for F in (:link, :invlink)
             T = eltype(x_data)
             y = $F(dist, x_data, Val{proj})
             return  y, Δ -> begin
-                out = (ForwardDiff.jacobian(x -> $F(dist, x, Val{proj}), x_data)::Matrix{T})' * Δ
+                out = reshape((ForwardDiff.jacobian(x -> $F(dist, x, Val{proj}), x_data)::Matrix{T})' * vec(Δ), size(Δ))
                 return (nothing, out, nothing)
             end
         end
